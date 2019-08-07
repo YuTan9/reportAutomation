@@ -12,7 +12,7 @@ div.Basic-Graphics-Frame {
 	border-style:solid;
 }
 div.Basic-Text-Frame {
-	border-style:solid;
+	/*border-style:solid;*/
 }
 table.Basic-Table {
 	border-collapse:collapse;
@@ -170,13 +170,16 @@ td.CellOverride-11 {
 	border-top-color:#005f9e;
 	border-top-width:1px;
 	vertical-align:top;
+	height: 75px;
 }
 td.CellOverride-12 {
 	background-color:#fffef0;
 	vertical-align:middle;
+	height: 50px;
 }
 td.CellOverride-13 {
 	vertical-align:middle;
+	height: 70px;
 }
 p.ParaOverride-1 {
 	text-align:center;
@@ -192,53 +195,83 @@ p.ParaOverride-4 {
 	-epub-hyphens:none;
 	text-align:justify;
 	text-align-last:left;
+	line-height: 24px;
 }
 p.ParaOverride-5 {
 	-epub-hyphens:none;
 }
-span.CharOverride-1 {
+span.PanCaTopRightStamp-CharOverride-1 {
 	color:#005f9e;
 	font-family:"Museo Sans 700", sans-serif;
 	font-size:36px;
 	font-style:normal;
 	font-weight:600;
 }
-span.CharOverride-2 {
+span.PanCaTopRightStamp-CharOverride-2 {
 	font-family:"Museo Sans 700", sans-serif;
 	font-size:36px;
 	font-style:normal;
 	font-weight:600;
 }
-span.CharOverride-3 {
+span.PanCaTopRightStamp-CharOverride-3 {
 	color:#58595b;
 	font-family:"Museo Sans 900", sans-serif;
 	font-size:36px;
 	font-style:normal;
 	font-weight:bold;
 }
+span.CharOverride-1 {
+	color:#005f9e;
+	font-family:"Museo Sans 700", sans-serif;
+	font-size:60px;
+	font-style:normal;
+	font-weight:600;
+}
+span.CharOverride-2 {
+	font-family:"Museo Sans 700", sans-serif;
+	font-size:60px;
+	font-style:normal;
+	font-weight:600;
+}
+span.CharOverride-3 {
+	color:#58595b;
+	font-family:"Museo Sans 900", sans-serif;
+	font-size:60px;
+	font-style:normal;
+	font-weight:bold;
+}
 span.CharOverride-4 {
 	color:#58595b;
 	font-family:"Museo Sans 700", sans-serif;
-	font-size:24px;
+	font-size:48px;
 	font-style:normal;
 	font-weight:600;
 }
 span.CharOverride-5 {
 	color:#ffffff;
 	font-family:"Museo Sans 700", sans-serif;
+	font-size: 28px;
 	font-style:normal;
 	font-weight:600;
+	padding-left: 30px;
 }
 span.CharOverride-6 {
 	color:#005f9e;
 	font-family:"Museo Sans 500", sans-serif;
-	font-size:9px;
+	font-size:24px;
 	font-style:normal;
 	font-weight:normal;
 }
+span.CharOverride-66 {
+	color:#005f9e;
+	font-family:"Museo Sans 500", sans-serif;
+	font-size:24px;
+	font-style:normal;
+	font-weight:500;
+}
 span.CharOverride-7 {
 	font-family:"Museo Sans 500", sans-serif;
-	font-size:9px;
+	font-size:24px;
 	font-style:normal;
 	font-weight:normal;
 }
@@ -272,7 +305,7 @@ span.CharOverride-11 {
 span.CharOverride-12 {
 	color:#58595b;
 	font-family:"Museo Sans 300", sans-serif;
-	font-size:6px;
+	font-size:12px;
 	font-style:normal;
 	font-weight:300;
 }
@@ -285,37 +318,39 @@ span.CharOverride-13 {
 }
 span.CharOverride-14 {
 	font-family:"Museo Sans 300", sans-serif;
-	font-size:7px;
+	font-size:24px;
 	font-style:normal;
 	font-weight:300;
+	line-height: 30px;
 }
 span.CharOverride-15 {
 	font-family:"Museo Sans 100", sans-serif;
-	font-size:5px;
+	font-size:18px;
 	font-style:normal;
 	font-weight:200;
 }
 span.CharOverride-16 {
 	font-family:"Museo Sans 500", sans-serif;
-	font-size:10px;
+	font-size:20px;
 	font-style:normal;
 	font-weight:normal;
 }
 span.CharOverride-17 {
 	font-family:"Museo Sans 300", sans-serif;
-	font-size:10px;
+	font-size:24px;
 	font-style:normal;
 	font-weight:300;
 }
 span.CharOverride-18 {
 	font-family:"Museo Sans 300", sans-serif;
-	font-size:9px;
+	font-size:28px;
 	font-style:normal;
 	font-weight:300;
+	line-height: 35px;
 }
 span.CharOverride-19 {
 	font-family:"Museo Sans 100", sans-serif;
-	font-size:9px;
+	font-size:24px;
 	font-style:normal;
 	font-weight:200;
 }
@@ -334,28 +369,29 @@ span.CharOverride-21 {
 span.CharOverride-22 {
 	color:#005f9e;
 	font-family:"Museo Sans 500", sans-serif;
-	font-size:7px;
+	font-size:28px;
 	font-style:normal;
 	font-weight:normal;
 }
 span.CharOverride-23 {
 	color:#005f9e;
 	font-family:"Museo Sans 300", sans-serif;
-	font-size:7px;
+	font-size:24px;
 	font-style:normal;
 	font-weight:300;
 }
 span.CharOverride-24 {
 	font-family:"Museo Sans 500", sans-serif;
-	font-size:11px;
+	font-size:28px;
 	font-style:normal;
 	font-weight:normal;
 }
 span.CharOverride-25 {
 	font-family:"Museo Sans 300", sans-serif;
-	font-size:11px;
+	font-size:16px;
 	font-style:normal;
 	font-weight:300;
+	text-align: center;
 }
 span.CharOverride-26 {
 	font-family:"Museo Sans 500", sans-serif;
@@ -381,10 +417,10 @@ span.CharOverride-29 {
 	font-style:normal;
 	font-weight:600;
 }
-span.CharOverride-30 {
+p.CharOverride-30 {
 	color:#58595b;
 	font-family:"Museo Sans 300", sans-serif;
-	font-size:9px;
+	font-size:28px;
 	font-style:normal;
 	font-weight:300;
 }
@@ -399,13 +435,13 @@ td._idGenCellOverride-2 {
 	border-right-width:1px;
 }
 col._idGenTableRowColumn-1 {
-	width:223px;
+	width:35%;
 }
 col._idGenTableRowColumn-2 {
-	width:283px;
+	width:65%;
 }
 tr._idGenTableRowColumn-3 {
-	height:48px;
+	height:120px;
 }
 col._idGenTableRowColumn-4 {
 	width:195px;
@@ -423,7 +459,7 @@ col._idGenTableRowColumn-8 {
 	width:171px;
 }
 tr._idGenTableRowColumn-9 {
-	height:44px;
+	height:75px;
 }
 col._idGenTableRowColumn-10 {
 	width:120px;
@@ -431,27 +467,158 @@ col._idGenTableRowColumn-10 {
 tr._idGenTableRowColumn-11 {
 	height:36px;
 }
+div.left{
+	float:left;
+}
+div.right{
+	float:right;
+}/*yutang*/
+.page{
+	page-break-after: always;
+	display: absolute;
+	top:0px;
+	left: 0px;
+	height: 1397px;
+	width: 985px;
+	border-style: solid;
+	border-width: medium;
+}
+#_idContainer006 {
+	margin-left: 5%;
+	margin-right: 5%;
+	width: 90%;
+}
+
 #_idContainer000 {
-	display:inline-block;
+	display: block;
 	height:12px;
-	position:relative;
-	width:595px;
+	background:#005f9e;
+	margin-top: 37px;
+}
+#_idContainer0001 {
+	width:100%;
+	height:20px;
+	background:#005f9e;
 }
 #_idContainer001 {
-	display:inline-block;
-	height:39px;
-	width:211px;
+	display:block;
+	width:40%;
+	margin-left: auto;
+	margin-right: auto;
+	padding-bottom: 1px;
 }
-#_idContainer003 {
+#cover_0{
 	display:inline-block;
-	height:0px;
-	position:relative;
-	width:233px;
+	width:100%;
+	margin-left: 60%;
+	margin-right: auto;
+	margin-top: 40%;
+	margin-bottom: auto;
+/*	border-style: solid;
+	border-width: medium;*/
 }
-#_idContainer007, #_idContainer025, #_idContainer076 {
+#cover_1{
 	display:inline-block;
-	height:21px;
-	width:115px;
+	width:100%;
+	height: 120px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 83.38%;
+	margin-bottom: auto;
+/*	border-style: solid;
+	border-width: medium;*/
+}
+img.center{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+#backCoverLogo{
+	width:100%;
+	float: left;
+}
+#backCover{
+	width: 88%;
+	height:450px;
+/*	border-style: solid;
+	border-width: medium;*/
+	margin-left: 10%;
+	margin-right: 2%;
+}
+img.left{
+	width: 100%;
+	display: block;
+}
+.info_header{
+	margin-left: 5%;
+	margin-right: 5%;
+	padding-top: 90px;
+}
+.info_footer{
+	margin-left: 5%;
+	margin-right: 5%;
+	padding-top: 100px;
+/*	border-style: solid;
+	border-width: medium;*/
+}
+#_idContainer005{
+	padding-top: 0.5%;
+	padding-bottom: auto;
+}
+#_idContainer002 {
+/*	display:inline-block;
+	width:450px;
+	margin-left: 70%;
+	margin-right: auto;
+	margin-top: 40%;
+	margin-bottom: auto;
+	border-style: solid;
+	border-width: medium;*/
+	/*position:absolute;
+	top: 350px;
+	right:35px;*/
+/*	position:fixed; 
+	top:30%; 
+	left:70%;*/
+	/*border-style: solid;
+	border-width: medium;*/
+}
+#PanCaTopRightStamp{
+	top: 10px;
+	right:5px;
+	width:300px;
+}
+#_idContainer003{
+	width:410px;
+}
+#_idContainer004{
+	/*display:inline-block;
+	position:absolute;
+	top: 430px;
+	right:40px;
+	width:360px;*/
+/*	display:inline-block;
+	width:360px;
+	margin-left: 70%;
+	margin-right: auto;
+	margin-top: 50%;
+	margin-bottom: auto;*/
+/*	border-style: solid;
+	border-width: medium;*/
+}
+#_idContainer008{
+	padding-top: 15px;
+}
+/*#_idContainer007, #_idContainer025, #_idContainer076 {
+	display:inline-block;
+	height:50px;
+	width:276px;
+}*/
+#_idContainer007{
+	display:inline-block;
+	height:50px;
+	width:276px;
+	float: left;
 }
 #_idContainer010, #_idContainer013 {
 	display:inline-block;
@@ -535,11 +702,21 @@ tr._idGenTableRowColumn-11 {
 	height:119px;
 	width:526px;
 }
-#_idContainer029, #_idContainer032 {
+#_idContainer032 {
 	display:inline-block;
 	height:0px;
 	position:relative;
-	width:324px;
+	width:100%;
+}
+#_idContainer029{
+	display:inline-block;
+	height:0px;
+	width:90%;
+}
+#_idContainer0290{
+	display:inline-block;
+	height:0px;
+	width:100%;
 }
 #_idContainer038, #_idContainer039, #_idContainer040 {
 	display:inline-block;
@@ -693,9 +870,9 @@ tr._idGenTableRowColumn-11 {
 	z-index:2;
 }
 img._idGenObjectAttribute-1 {
-	height:100.00%;
-	min-width:100%;
-	width:100.00%;
+	height:90.00%;
+	min-width:90%;
+	width:90.00%;
 }
 div._idGenObjectStyleOverride-1 {
 	background-color:#005f9e;
@@ -709,11 +886,11 @@ div._idGenObjectStyleOverride-3 {
 }
 div._idGenObjectStyleOverride-4 {
 	background-color:#005f9e;
-	border-bottom-left-radius:12px;
-	border-bottom-right-radius:12px;
-	border-top-left-radius:12px;
-	border-top-right-radius:12px;
+	border-bottom-right-radius:19px;
+	border-top-right-radius:19px;
 	border-width:0px;
+	height: 38px;
+	width: 95%;
 }
 div._idGenObjectStyleOverride-5 {
 	border-width:1px;
@@ -760,5 +937,239 @@ div._idGenObjectStyleOverride-13 {
 	border-width:0px;
 }
 div._idGenObjectLayout-1 {
-	text-align:center;
+	width: 80%;
+}
+
+
+/*added by yutang*/
+#table001{
+	width:86%; 
+    margin-left:7%; 
+    margin-right:7%;
+    border: 2px solid black;
+}
+#table002{
+	width: 100%;
+	border: 2px solid black;
+}
+#table003{
+	width: 100%;
+	border: 2px solid #005f9e;
+}
+#table004, #table005{
+	width: 100%;
+	border: 2px solid black;
+}
+#patient_info{
+	padding-top: 150px;
+}
+#patient_info0{
+	padding-top: 100px;
+}
+#indicationsForOrdering{
+	padding-top: 70px;
+}
+#page_br{
+	page-break-after: always;
+}
+.pageNo{
+	/*padding-left: 300px;*/
+	margin-right: 40%;
+	float:right;
+	color: grey;
+	font-size: 22px;
+}
+#_idContainer015{
+	float: right;
+	padding-top: 20px;
+}
+#_idContainer034{
+	width:79%; 
+    margin-left:7%; 
+    margin-right:14%;
+    padding-top: 50px;
+}
+#_idContainer026{
+	width:79%; 
+    margin-left:7%; 
+    margin-right:14%;
+    padding-top: 5px;
+    padding-left:10px;
+    padding-right:10px;
+    background-color: #D9D9D9;
+	border-bottom-right-radius:12px;
+	border-bottom-left-radius:12px;
+	border-width:1px;
+	border-style: solid;
+	height: 200px;
+}
+#_idContainer033{
+	width:90%; 
+    margin-left:5%; 
+    margin-right:5%;
+    padding-top: 10px;
+}
+#_idContainer054, #_idContainer055{
+	width: 100%;
+	padding-top: 20px;
+}
+#_idContainer1000{
+	width:40%;
+	float: left;
+}
+#lineChart{
+	width: 50%;
+	float: right;
+	padding-top: 15%;
+}
+#electronicSignature{
+	width: 86%;
+	margin-left:5%; 
+    margin-right:9%;
+    padding-top: 40px;
+    height:120px;
+}
+#electronicSignatureLeft{
+	float:left;
+	width: 70%;
+}
+#electronicSignatureRight{
+	float:right;
+	width: 20%;
+}
+#_idContainer031{
+	width: 90%;
+	margin-left:5%; 
+    margin-right:5%;
+}
+#_idContainer036{
+	height:30px;
+}
+#_idContainer053{
+	width: 90%;
+	margin-left:5%; 
+    margin-right:5%;
+    padding-top: 50px;
+}
+#_idContainer067, #_idContainer083{
+	width: 92%;
+	margin-left:3%; 
+    margin-right:5%;
+    padding-top: 20px;  
+}
+#tumorType, #dateOfDiagnosis, #pathologicalDiagnosis, #tumorStage, #metastasisSite, #dateOfMostRecentTreatment{
+	font-size: 24px;
+	padding-left: 20px;
+}
+#testingHistory{
+	width: 90%;
+	margin-left: 7%;
+	margin-right:3%;
+	height: 1000px;
+}
+#ctcLineChartImg{
+	width:100%;
+}
+#empty0{
+	width:100%;
+	height:450px;
+}
+#empty1{
+	width:100%;
+	height:200px;
+}
+#empty2{
+	width:100%;
+	height:500px;
+}
+#empty3{
+	width:100%;
+	height:300px;
+}
+#empty4{
+	width:100%;
+	height:50px;
+/*	border-width:1px;
+	border-style: solid;*/
+}
+#empty5{
+	width:100%;
+	height:85px;
+/*	border-width:1px;
+	border-style: solid;*/
+}
+#empty6{
+	width:100%;
+	height:900px;
+/*	border-width:1px;
+	border-style: solid;*/
+}
+#empty7{
+	width:100%;
+	height:24px;
+/*	border-width:1px;
+	border-style: solid;*/
+}
+
+#_idContainer086{
+	background-color:#005f9e;
+	border-bottom-right-radius:50px;
+	border-top-right-radius:50px;
+	border-width:0px;
+	height: 100px;
+	width: 70%;
+}
+#slogan{
+	width:70%;
+	margin-left: 10%;
+	margin-right: 20%;
+	padding-top: 25px;
+	font-size: 38px;
+	color:#ffffff;
+	font-family:"Museo Sans 700", sans-serif;
+	font-style:normal;
+	font-weight:600;
+}
+#idContainer110{
+	width:40%;
+	float:left;
+	padding-top: 20%;
+/*	border-width:1px;
+	border-style: solid;*/
+}
+#_idContainer200{
+	margin-top: 100px;
+	font-family:"Museo Sans 700", sans-serif;
+	font-size: 30px;
+}
+#contact{
+	width: 40%;
+	float:right;
+	height:100%;
+/*	border-width:1px;
+	border-style: solid;*/
+}
+#contactTable{
+	width: 100%;
+}
+#contactTable-B{
+	height:160px;
+	width:50%;
+}
+#contactTable-A{
+	height:160px;
+	width: 50%;
+}
+#emailIcon{
+	width:60px;
+}
+.contactTableRow{
+	height:160px;
+	border: 1px solid black;
+	text-align: right;
+}
+#contactTableData{
+	margin-left: 25%;
+	margin-right: 25%;
+	width:50%;
 }
