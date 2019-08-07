@@ -220,6 +220,27 @@ span.PanCaTopRightStamp-CharOverride-3 {
 	font-style:normal;
 	font-weight:bold;
 }
+span.Cover_CharOverride-1{
+	color:#005f9e;
+	font-family:"Museo Sans 700", sans-serif;
+	font-size:100px;
+	font-style:normal;
+	font-weight:400;
+}
+span.Cover_CharOverride-2{
+	font-family:"Museo Sans 700", sans-serif;
+	font-size:100px;
+	font-style:normal;
+	font-weight:600;
+}
+span.Cover_CharOverride-3{
+	color:#58595b;
+	font-family:"Museo Sans 900", sans-serif;
+	font-size:100px;
+	font-style:normal;
+	font-weight:900;	
+	padding-left: 30px;
+}
 span.CharOverride-1 {
 	color:#005f9e;
 	font-family:"Museo Sans 700", sans-serif;
@@ -246,6 +267,15 @@ span.CharOverride-4 {
 	font-size:48px;
 	font-style:normal;
 	font-weight:600;
+}
+span.Cover_CharOverride-4 {
+	color:#58595b;
+	font-family:"Museo Sans 700", sans-serif;
+	font-size:80px;
+	font-style:normal;
+	font-weight:600;
+	padding-left: 140px;
+	padding-top: 90px;
 }
 span.CharOverride-5 {
 	color:#ffffff;
@@ -337,13 +367,13 @@ span.CharOverride-16 {
 }
 span.CharOverride-17 {
 	font-family:"Museo Sans 300", sans-serif;
-	font-size:24px;
+	font-size:28px;
 	font-style:normal;
 	font-weight:300;
 }
 span.CharOverride-18 {
 	font-family:"Museo Sans 300", sans-serif;
-	font-size:28px;
+	font-size:24px;
 	font-style:normal;
 	font-weight:300;
 	line-height: 35px;
@@ -510,8 +540,8 @@ div.right{
 #cover_0{
 	display:inline-block;
 	width:100%;
-	margin-left: 60%;
-	margin-right: auto;
+	margin-left: 50%;
+	margin-right: 10%;
 	margin-top: 40%;
 	margin-bottom: auto;
 /*	border-style: solid;
@@ -523,7 +553,7 @@ div.right{
 	height: 120px;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 83.38%;
+	margin-top: 77.75%;
 	margin-bottom: auto;
 /*	border-style: solid;
 	border-width: medium;*/
@@ -589,7 +619,7 @@ img.left{
 	width:300px;
 }
 #_idContainer003{
-	width:410px;
+	width:700px;
 }
 #_idContainer004{
 	/*display:inline-block;
@@ -883,6 +913,7 @@ div._idGenObjectStyleOverride-2 {
 }
 div._idGenObjectStyleOverride-3 {
 	border-color:#58595b;
+	border-width: 3px;
 }
 div._idGenObjectStyleOverride-4 {
 	background-color:#005f9e;
