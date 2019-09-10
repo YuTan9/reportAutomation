@@ -10,11 +10,13 @@ import matplotlib.pyplot as plt
 import threading
 import time
 from bs4 import BeautifulSoup
+import datetime
 
 
 def getLineChart(id, x, y):
 	if(len(x) != len(y)):
 		return
+	base = y[0]
 	while len(x) > 6:
 		x = x[1:]
 	while len(y) > 6:
@@ -27,16 +29,19 @@ def getLineChart(id, x, y):
 		pseudoX.append(' ')
 		pseudoY.append(y[len(y)-1])
 
-	print(x)
-	print(pseudoX)
-	print(y)
-	print(pseudoY)
+	# print(x)
+	# print(pseudoX)
+	# print(y)
+	# print(pseudoY)
 
 	plt.style.use('fast')
 	fig = plt.figure(figsize = [7,7])
+	matplotlib.rcParams['font.sans-serif'] = ['Microsoft YaHei', 'sans-serif']
 	ax = plt.axes()
 	minimum = min(y)
+	minimum = min(minimum, base)
 	maximum = max(y)
+	maximum = max(maximum, base)
 	range_  = maximum - minimum
 	ticks   = int(maximum / 8)+1 # a $ticks between every ticks
 
@@ -46,8 +51,8 @@ def getLineChart(id, x, y):
 
 	plt.xticks(range(len(pseudoX)), pseudoX)
 	plt.yticks(ytick, ytick)
-	plt.xlabel("Test Date")
-	plt.ylabel("CTC Count")
+	plt.xlabel("檢測日期")
+	plt.ylabel("CTC 顆數")
 
 	y0= [ytick[0] for i in range(len(pseudoY))]
 	y1= [ytick[1] for i in range(len(pseudoY))]
@@ -66,16 +71,16 @@ def getLineChart(id, x, y):
 	plt.plot(pseudoX,y6, '-', color='black', linewidth=1)
 	plt.plot(pseudoX,y7, '-', color='black', linewidth=1)
 
-	base = [y[0] for i in range(len(pseudoY))]
+	base = [base for i in range(len(pseudoY))]
 	plt.plot(pseudoX, base, '-', color='red', linewidth=2)
 
 	plt.plot(x, y, '-', color='black', linewidth=2, markersize=1)
 	for i in range(len(x)):
 		plt.plot(x[i], y[i], 'o', color='black')
-	print("Saving picture: " + str(id))
-	fig.savefig("tmp.jpg",figsize=(7, 7), dpi=100)
+	# print("Saving picture: " + str(id))
+	fig.savefig("tmp.jpg",figsize=(7, 7), dpi=1200)
 
-def printPdfFromHtml():
+def printPdfFromHtml(clientInfo, count, date):
 	path_wkthmltopdf = r'wkhtmltopdf\\bin\\wkhtmltopdf.exe'
 	config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
 	option = {
@@ -84,32 +89,83 @@ def printPdfFromHtml():
 		'margin-left': '0mm',
 		'margin-right': '0mm',
 		'page-size': 'A4'
- 	}
- 	soup = BeautifulSoup(open('PanCA Monitor HTML\\PanCA Monitor Report_low TW.html', "r", encoding = "utf-8").read(), "html")
-	pdfkit.from_file('PanCA Monitor HTML\\PanCA Monitor Report_low TW.html', 'report.pdf', configuration=config, options = option)
+		}
+	soup = BeautifulSoup(open('PanCA Monitor HTML\\PanCA_CH_Template.html', "r", encoding = "utf-8").read(), "html5lib")
+	soup = fillInById(soup, clientInfo, count, date)
+
+	with open("PanCA Monitor HTML\\reportTestHTML.html", "w", encoding='utf-8') as file:
+		file.write(str(soup))
+	# print(soup.prettify().encode('utf-8'))
+	pdfkit.from_file('PanCA Monitor HTML\\reportTestHTML.html', 'report.pdf', configuration=config, options = option)
+
+def fillInById(soup, clientInfo, count, date):
+	today = datetime.date.today().strftime("%Y/%m/%d")
+	bdMonth, bdDay, bdYear = clientInfo[1].split("/")
+	#First Page
+	soup.find(id='requisitionNumber').string        = clientInfo[4]
+	soup.find(id='patientName').string              = clientInfo[0]
+	soup.find(id='idNumber').string                 = clientInfo[5]
+	soup.find(id='dateOfBirth').string              = bdYear + "/" + bdMonth + "/" + bdDay
+	soup.find(id='gender').string                   = clientInfo[3]
+	soup.find(id='patientPhoneNumber').string       = ''
+	soup.find(id='patientEmail').string             = ''
+	soup.find(id='nameOfLab').string                = clientInfo[6]
+	soup.find(id='labPhoneNumber').string           = ''
+	soup.find(id='nameOfPhysician').string          = clientInfo[7]
+	soup.find(id='dateOfCollection').string         = date[len(date)-1]
+	soup.find(id='dateOfReport').string             = today
+	#Second Page
+	soup.find(id='currentCtcCount').string          = str(count[len(count)-1])
+	soup.find(id='baselineCount').string            = str(count[0])
+	soup.find(id='currentCtcTrend').string          = ''
+
+	soup.find(id='comments').string                 = ''
+	soup.find(id='eSignDate').string                = today
+	soup.find(id='tumorType').string                = clientInfo[8]
+	soup.find(id='dateOfDiagnosis').string          = ''
+	soup.find(id='pathologicalDiagnosis').string    = ''
+	soup.find(id='tumorStage').string               = clientInfo[9]
+	soup.find(id='metastasisSite').string           = ''
+	soup.find(id='dateOfMostRecentTreatment').string= ''
+	soup.find(id='table004-B1').string              = str(date[0])
+	soup.find(id='table004-B2').string              = str(count[0])
+	while len(date) > 6:
+		date = date[1:]
+	while len(count) > 6:
+		count = count[1:]
+	for i in range(len(count)):
+		columnA = "table005-A" + str(2+i)
+		columnB = "table005-B" + str(2+i)
+		soup.find(id = columnA).string              = str(date[i])
+		soup.find(id = columnB).string              = str(count[i])
+
+	return soup
 
 def press(button):
 	if button == "Cancel":
 		app.stop()
 	else:
 		print("Name:", app.entry("Name"), "Birthday:", app.entry("Birthday"))
+		print("Press Ctrl+C to quit")
 		app.hide()
 		name = str(app.entry("Name"))
 		bd = str(app.entry("Birthday"))
 		credential = fgs.init()
-		clientId = fgs.getId(credential, [name], [bd])
-		print('client id: ' + clientId)
+		clientId, gender, twId = fgs.getId(credential, [name], [bd])
 		if clientId != "Not found":
-			inds, date = fgs.getRecord(credential, clientId)
+			print('client id: ' + clientId)
+			inds, date, sampleCollectingSite, vs, tumorType, tnm = fgs.getRecord(credential, clientId)
 			count = fgs.fetchReportCount(credential, inds)
-			# print(inds)
-			print(date)
-			print(count)
+			#clientInfo: [name, bd, clientId, gender, ind, twId, sampleCollectingSite, tnm]
+			clientInfo = [name, bd, clientId, gender, inds[len(inds)-1], twId, sampleCollectingSite[0], vs[0], tumorType, tnm]
+			print("inds: " + str(inds))
+			print("date: " + str(date))
+			print("count:" + str(count))
 			# collection date 
 			# x,y = fgs.getRecord(credential, clientId)
 			# Create new threads
-			thread1 = myThread(1, "Thread_getLineChart", [getLineChart, clientId, date, count])
-			thread2 = myThread(2, "Thread_printPdfFromHtml", [printPdfFromHtml])
+			thread1 = myThread(1, "Thread_getLineChart", [getLineChart, clientId, date.copy(), count.copy()])
+			thread2 = myThread(2, "Thread_printPdfFromHtml", [printPdfFromHtml, clientInfo, count.copy(), date.copy()])
 
 
 			# Start new Threads
@@ -124,19 +180,23 @@ def press(button):
 			for t in threads:
 				t.join()
 			print("All thread joined")
+			app.infoBox("Success", "The report is generated under the current folder with name report.pdf\n" +
+				"Rename it before generating a new one to avoid overwriting.\n" + 
+				"\tRecords found: " + str(len(inds)) +
+				"\n\tID Number: " + twId +
+				"\n\tName of Lab: " + sampleCollectingSite[0] + 
+				"\n\tName of Physician: " + vs[0])
+			# app.clearAllEntries(callFunction=False)
 		else:
-			app.infoBox("Not found", "The information you entered is not found.")
+			app.errorBox("Not found", "The information you entered is not found.")
 			app.clearAllEntries(callFunction=False)
 		app.show()
-
-
-
 
 def executeThreadFunc(args):
 	if args[0] == getLineChart:
 		getLineChart(args[1], args[2], args[3])
 	elif args[0] == printPdfFromHtml:
-		printPdfFromHtml()
+		printPdfFromHtml(args[1], args[2], args[3])
 	elif args[0] == fgs.fetchReportCount:
 		fgs.fetchReportCount(args[1], args[2])
 
@@ -153,13 +213,11 @@ class myThread (threading.Thread):
 		print(self.name + " acquired lock.")
 		try:
 			executeThreadFunc(self.args)
-		except:
-			print("Error raised in " + self.name + " by " + str(self.func) + ".")
+		except Exception as e:
+			print("Error raised in " + self.name + " by " + str(self.args[0]) + " with error message: " + str(e))
 		# Free lock to release next thread
 		threadLock.release()
 		print(self.name + " released lock.")
-
-
 
 ###############
 #MAIN FUNCTION#
@@ -175,5 +233,6 @@ app.addLabelEntry("Birthday")
 app.setEntryDefault("Name", "Enter Name")
 app.setEntryDefault("Birthday", "Birthday in MM/DD/YYYY")
 app.addButtons(["Submit", "Cancel"], press)
+app.enableEnter(press)
 app.setFocus("Name")
 app.go()
