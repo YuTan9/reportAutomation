@@ -171,7 +171,7 @@ td.CellOverride-11 {
 	border-top-color:#005f9e;
 	border-top-width:1px;
 	vertical-align:top;
-	height: 75px;
+	height: 120px;
 }
 td.CellOverride-12 {
 	background-color:#fffef0;
@@ -284,7 +284,7 @@ span.Cover_CharOverride-40 {
 	font-size:50px;
 	font-style:normal;
 	/*font-weight:600;*/
-	padding-left: 80px;
+	padding-left: 160px;
 	/*padding-top: 90px;*/
 }
 span.Cover_CharOverride-41 {
@@ -398,7 +398,7 @@ span.CharOverride-17 {
 }
 span.CharOverride-17_table {
 	font-family:"Museo Sans 300", sans-serif;
-	font-size:36px;
+	font-size:50px;
 	font-style:normal;
 	font-weight:300;
 }
@@ -446,10 +446,17 @@ span.CharOverride-22 {
 	font-style:normal;
 	font-weight:normal;
 }
-span.historyTableFont {
+.historyTableFont {
 	color:#005f9e;
 	font-family:"微軟正黑體", sans-serif;
-	font-size:19px;
+	font-size:24px;
+	font-style:normal;
+	font-weight:normal;
+}
+.historyTableFont_content {
+	color:#000000;
+	font-family:"微軟正黑體", sans-serif;
+	font-size:24px;
 	font-style:normal;
 	font-weight:normal;
 }
@@ -514,6 +521,7 @@ td._idGenCellOverride-1 {
 	border-bottom-color:#005f9e;
 	border-bottom-style:solid;
 	border-bottom-width:1px;
+	/*width:30px;*/
 }
 td._idGenCellOverride-2 {
 	border-right-color:#005f9e;
@@ -536,13 +544,16 @@ col._idGenTableRowColumn-5 {
 	width:296px;
 }
 col._idGenTableRowColumn-6 {
-	width:84px;
+	width:40px;
+	/*width:84px;*/
 }
 col._idGenTableRowColumn-7 {
-	width:144px;
+	width:160px;
+	/*width:144px;*/
 }
 col._idGenTableRowColumn-8 {
-	width:171px;
+	width:185px;
+	/*width:171px;*/
 }
 tr._idGenTableRowColumn-9 {
 	height:75px;
@@ -1164,7 +1175,7 @@ div._idGenObjectLayout-1 {
 }
 #tumorType, #dateOfDiagnosis, #pathologicalDiagnosis, #tumorStage, #metastasisSite, #dateOfMostRecentTreatment{
 	font-size: 24px;
-	padding-left: 20px;
+	padding-left: 10px;
 }
 #testingHistory{
 	width: 90%;

@@ -107,7 +107,10 @@ def fillInById(soup, clientInfo, count, date):
 	soup.find(id='patientName').string              = clientInfo[0]
 	soup.find(id='idNumber').string                 = clientInfo[5]
 	soup.find(id='dateOfBirth').string              = bdYear + "/" + bdMonth + "/" + bdDay
-	soup.find(id='gender').string                   = clientInfo[3]
+	if clientInfo[3] == 'M':
+		soup.find(id='gender').string               = '男'
+	if clientInfo[3] == 'F':
+		soup.find(id='gender').string               = '女'	
 	soup.find(id='patientPhoneNumber').string       = ''
 	soup.find(id='patientEmail').string             = ''
 	soup.find(id='nameOfLab').string                = clientInfo[6]
