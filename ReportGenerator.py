@@ -11,6 +11,7 @@ import threading
 import time
 from bs4 import BeautifulSoup
 import datetime
+import re
 
 
 def getLineChart(id, x, y):
@@ -80,7 +81,7 @@ def getLineChart(id, x, y):
 	# print("Saving picture: " + str(id))
 	fig.savefig("tmp.jpg",figsize=(7, 7), dpi=1200)
 
-def printPdfFromHtml(clientInfo, count, date):
+def printPdfFromHtml(clientInfo, count, date, filename):
 	path_wkthmltopdf = r'wkhtmltopdf\\bin\\wkhtmltopdf.exe'
 	config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
 	option = {
@@ -96,7 +97,7 @@ def printPdfFromHtml(clientInfo, count, date):
 	with open("PanCA Monitor HTML\\reportTestHTML.html", "w", encoding='utf-8') as file:
 		file.write(str(soup))
 	# print(soup.prettify().encode('utf-8'))
-	pdfkit.from_file('PanCA Monitor HTML\\reportTestHTML.html', 'report.pdf', configuration=config, options = option)
+	pdfkit.from_file('PanCA Monitor HTML\\reportTestHTML.html', filename, configuration=config, options = option)
 
 def fillInById(soup, clientInfo, count, date):
 	today = datetime.date.today().strftime("%Y/%m/%d")
@@ -120,8 +121,9 @@ def fillInById(soup, clientInfo, count, date):
 	soup.find(id='currentCtcTrend').string          = ''
 
 	soup.find(id='comments').string                 = ''
-	soup.find(id='eSignDate').string                = today
-	soup.find(id='tumorType').string                = clientInfo[8]
+	soup.find(id='eSignDate1').string               = today
+	soup.find(id='eSignDate2').string               = today
+	soup.find(id='tumorType').string                = ''
 	soup.find(id='dateOfDiagnosis').string          = ''
 	soup.find(id='pathologicalDiagnosis').string    = ''
 	soup.find(id='tumorStage').string               = clientInfo[9]
@@ -146,10 +148,16 @@ def press(button):
 		app.stop()
 	else:
 		print("Name:", app.entry("Name"), "Birthday:", app.entry("Birthday"))
-		print("Press Ctrl+C to quit")
+		print("Press Ctrl+C (twice or more)to quit")
 		app.hide()
 		name = str(app.entry("Name"))
 		bd = str(app.entry("Birthday"))
+		filename = str(app.entry("Filename"))
+		if filename == '':
+			filename = 'report.pdf'
+		if not re.match('^.*\.pdf$', filename):
+			filename = filename + ".pdf"
+		print("Filename: " + filename)
 		credential = fgs.init()
 		clientId, gender, twId = fgs.getId(credential, [name], [bd])
 		if clientId != "Not found":
@@ -165,7 +173,7 @@ def press(button):
 			# x,y = fgs.getRecord(credential, clientId)
 			# Create new threads
 			thread1 = myThread(1, "Thread_getLineChart", [getLineChart, clientId, date.copy(), count.copy()])
-			thread2 = myThread(2, "Thread_printPdfFromHtml", [printPdfFromHtml, clientInfo, count.copy(), date.copy()])
+			thread2 = myThread(2, "Thread_printPdfFromHtml", [printPdfFromHtml, clientInfo, count.copy(), date.copy(), filename])
 
 
 			# Start new Threads
@@ -180,13 +188,13 @@ def press(button):
 			for t in threads:
 				t.join()
 			print("All thread joined")
-			app.infoBox("Success", "The report is generated under the current folder with name report.pdf\n" +
+			app.infoBox("Success", "The report is generated under the current folder with name " + filename + "\n" +
 				"Rename it before generating a new one to avoid overwriting.\n" + 
 				"\tRecords found: " + str(len(inds)) +
 				"\n\tID Number: " + twId +
 				"\n\tName of Lab: " + sampleCollectingSite[0] + 
 				"\n\tName of Physician: " + vs[0])
-			# app.clearAllEntries(callFunction=False)
+			app.clearAllEntries(callFunction=False)
 		else:
 			app.errorBox("Not found", "The information you entered is not found.")
 			app.clearAllEntries(callFunction=False)
@@ -196,7 +204,7 @@ def executeThreadFunc(args):
 	if args[0] == getLineChart:
 		getLineChart(args[1], args[2], args[3])
 	elif args[0] == printPdfFromHtml:
-		printPdfFromHtml(args[1], args[2], args[3])
+		printPdfFromHtml(args[1], args[2], args[3], args[4])
 	elif args[0] == fgs.fetchReportCount:
 		fgs.fetchReportCount(args[1], args[2])
 
@@ -224,14 +232,16 @@ class myThread (threading.Thread):
 ###############
 threadLock = threading.Lock()
 threads = []
-app = gui("CellmaxLife Report Generator", "400x200")
+app = gui("CellmaxLife Report Generator", "450x200")
 app.setBg("white")
 app.setIcon("icon.gif")
 app.setFont(12)
 app.addLabelEntry("Name")
 app.addLabelEntry("Birthday")
+app.addLabelEntry("Filename")
 app.setEntryDefault("Name", "Enter Name")
 app.setEntryDefault("Birthday", "Birthday in MM/DD/YYYY")
+app.setEntryDefault("Filename", "The filename you want to save as. (Default: report.pdf)")
 app.addButtons(["Submit", "Cancel"], press)
 app.enableEnter(press)
 app.setFocus("Name")
