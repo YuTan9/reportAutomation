@@ -81,7 +81,7 @@ def getLineChart(id, x, y):
 	# print("Saving picture: " + str(id))
 	fig.savefig("tmp.jpg",figsize=(7, 7), dpi=1200)
 
-def printPdfFromHtml(clientInfo, count, date, filename):
+def printPdfFromHtml(clientInfo, count, date, filename, template, directory):
 	path_wkthmltopdf = r'wkhtmltopdf\\bin\\wkhtmltopdf.exe'
 	config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
 	option = {
@@ -91,13 +91,13 @@ def printPdfFromHtml(clientInfo, count, date, filename):
 		'margin-right': '0mm',
 		'page-size': 'A4'
 		}
-	soup = BeautifulSoup(open('PanCA Monitor HTML\\PanCA_CH_Template.html', "r", encoding = "utf-8").read(), "html5lib")
+	soup = BeautifulSoup(open('PanCA Monitor HTML\\' + template, "r", encoding = "utf-8").read(), "html5lib")
 	soup = fillInById(soup, clientInfo, count, date)
 
-	with open("PanCA Monitor HTML\\reportTestHTML.html", "w", encoding='utf-8') as file:
+	with open("PanCA Monitor HTML\\htmlWithInfo.html", "w", encoding='utf-8') as file:
 		file.write(str(soup))
 	# print(soup.prettify().encode('utf-8'))
-	pdfkit.from_file('PanCA Monitor HTML\\reportTestHTML.html', filename, configuration=config, options = option)
+	pdfkit.from_file('PanCA Monitor HTML\\htmlWithInfo.html', directory + "/" + filename, configuration=config, options = option)
 
 def fillInById(soup, clientInfo, count, date):
 	today = datetime.date.today().strftime("%Y/%m/%d")
@@ -150,17 +150,45 @@ def press(button):
 	if button == "Cancel":
 		app.stop()
 	else:
-		print("Name:", app.entry("Name"), "Birthday:", app.entry("Birthday"))
-		print("Press Ctrl+C (twice or more)to quit")
 		app.hide()
 		name = str(app.entry("Name"))
 		bd = str(app.entry("Birthday"))
+		bd = bd.split("/")[1] + "/" + bd.split("/")[2] + "/" + bd.split("/")[0]
+		print("Name:", name, "Birthday:", bd)
+
 		filename = str(app.entry("Filename"))
 		if filename == '':
 			filename = 'report.pdf'
 		if not re.match('^.*\.pdf$', filename):
 			filename = filename + ".pdf"
 		print("Filename: " + filename)
+
+		template = ''
+		if app.getOptionBox("Templates") == "Traditional Chinese":
+			template = "PanCA_CH_Template.html"
+
+		elif app.getOptionBox("Templates") == "Simplified Chinese":
+			template = "PanCA_simplified_CH_Template.html"
+
+		elif app.getOptionBox("Templates") == "Captain":
+			template = "PanCA_Captain_Template.html"
+
+		elif app.getOptionBox("Templates") == "Elite":
+			template = "PanCA_Elite_Template.html"
+
+		elif app.getOptionBox("Templates") == "Shin Kong":
+			template = "PanCA_SK_Template.html"
+
+		elif app.getOptionBox("Templates") == "English":
+			template = "PanCA_EN_Template.html"
+			
+		else:
+			app.errorBox("Not found", "Error happened in initializing templates.")	
+			return
+
+		directory = app.entry("Save at")
+		print("Press Ctrl+C (twice or more)to quit")
+
 		credential = fgs.init()
 		clientId, gender, twId = fgs.getId(credential, [name], [bd])
 		if clientId != "Not found":
@@ -176,7 +204,7 @@ def press(button):
 			# x,y = fgs.getRecord(credential, clientId)
 			# Create new threads
 			thread1 = myThread(1, "Thread_getLineChart", [getLineChart, clientId, date.copy(), count.copy()])
-			thread2 = myThread(2, "Thread_printPdfFromHtml", [printPdfFromHtml, clientInfo, count.copy(), date.copy(), filename])
+			thread2 = myThread(2, "Thread_printPdfFromHtml", [printPdfFromHtml, clientInfo, count.copy(), date.copy(), filename, template, directory])
 
 
 			# Start new Threads
@@ -207,7 +235,7 @@ def executeThreadFunc(args):
 	if args[0] == getLineChart:
 		getLineChart(args[1], args[2], args[3])
 	elif args[0] == printPdfFromHtml:
-		printPdfFromHtml(args[1], args[2], args[3], args[4])
+		printPdfFromHtml(args[1], args[2], args[3], args[4], args[5], args[6])
 	elif args[0] == fgs.fetchReportCount:
 		fgs.fetchReportCount(args[1], args[2])
 
@@ -243,8 +271,10 @@ app.addLabelEntry("Name")
 app.addLabelEntry("Birthday")
 app.addLabelEntry("Filename")
 app.setEntryDefault("Name", "Enter Name")
-app.setEntryDefault("Birthday", "Birthday in MM/DD/YYYY")
+app.setEntryDefault("Birthday", "Birthday in YYYY/MM/DD")
 app.setEntryDefault("Filename", "The filename you want to save as. (Default: report.pdf)")
+app.addLabelOptionBox("Templates", ["Traditional Chinese", "Simplified Chinese", "Captain", "Elite", "Shin Kong", "English"])
+app.addDirectoryEntry("Save at")
 app.addButtons(["Submit", "Cancel"], press)
 app.enableEnter(press)
 app.setFocus("Name")
