@@ -178,26 +178,32 @@ def fetchReportCount(credentials, inds):
 	countResponse = countRequest.execute()
 	count         = countResponse.get('values', [])
 
+	print(inds)
 	arr = []
 	founds = []
 	tumorInfo = []
 	tnm = ''
-	for j in range(len(inds)):
+	for j in range(0,len(inds)):
 		flag = 0
-		# print(inds[j])
 		for i in range(len(trfId)):
-			if trfId[i][0] == inds[j]:
+			if trfId[i] == []:
+				raise ValueError("Some value on Google sheet is empty.")
+			if str(trfId[i][0]) == str(inds[j]):
+				print("trfId: " + str(trfId[i][0]) + " ind: " + str(inds[j]))
 				for found in founds:
 					if found == sampleId[i][0]:
 						flag = 1
-						break;
+						break
+					else:
+						continue
 				if flag == 0:
-					# print(count[i])
-					# print(sampleId[i])
-					print(str(inds[j]) + "found with count: " + str(count[i][0]))
+					print(str(inds[j]) + "found with count: " + str(count[i][0]) + " sampleId: " + str(sampleId[i][0]))
 					arr.append(int(count[i][0]))
 					founds.append(sampleId[i][0])
-					# tnm = tnms[i][0]
+					break
+				elif flag ==1:
+					flag = 0
+					continue
 
 				
 	# print(arr)

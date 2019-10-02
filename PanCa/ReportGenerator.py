@@ -194,7 +194,7 @@ def press(button):
 		if clientId != "Not found":
 			print('client id: ' + clientId)
 			inds, date, sampleCollectingSite, vs, tumorType, tnm = fgs.getRecord(credential, clientId)
-			count = fgs.fetchReportCount(credential, inds)
+			count = fgs.fetchReportCount(credential, inds.copy())
 			#clientInfo: [name, bd, clientId, gender, ind, twId, sampleCollectingSite, tnm]
 			clientInfo = [name, bd, clientId, gender, inds[len(inds)-1], twId, sampleCollectingSite[0], vs[0], tumorType, tnm]
 			print("inds: " + str(inds))
