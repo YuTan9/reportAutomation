@@ -31,25 +31,7 @@ def init():
 		with open('token.pickle', 'wb') as token:
 			pickle.dump(credentials, token)
 		return credentials
-	
-def printRange(credentials, ss, range):
-	service = discovery.build('sheets', 'v4', credentials=credentials)
-	spreadsheet_id = '1Q6CgVm7u4oT4G0Hsc1gAqxBtOd4z9Auv34KCOG2ZRpc' 
-	ranges = str(ss) + "!" + range  
-	request = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=ranges)
-	response = request.execute()
-	pprint(response.get('values', []))
 
-	# PS C:\Users\thoma\Desktop\Code\reportGenerator> python .\googlescripttest.py
-	# [['TRF ID', 'Collection Date'],
-	#  ['IND905675', '2017/10/03'],
-	#  ['IND905675', '2017/10/03'],
-	#  ['IND906234', '2017/11/13'],
-	#  ['IND906234', '2017/11/13'],
-	#  ['IND906335', '2018/01/25'],
-	#  ['IND906335', '2018/01/25'],
-	#  ['IND905818', '2018/03/22'],
-	#  ['IND908693', '2018/08/22'],
 
 def getId(credentials, name, bd):
 	# credentials: credentials
@@ -104,138 +86,116 @@ def getId(credentials, name, bd):
 def getRecord(credentials, clientId):
 	service = discovery.build('sheets', 'v4', credentials=credentials, cache_discovery=False)
 	spreadsheet_id = '1Q6CgVm7u4oT4G0Hsc1gAqxBtOd4z9Auv34KCOG2ZRpc' 
-	ranges = "RUO with ID!A:A"
+	ranges = "Sample Reception with ID!A:A"
 	request = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=ranges)
 	response = request.execute()
 	clientIds = response.get('values', [])
 	inds = [] #id
 	date = []
-	sampleCollectingSite= ['']
-	vs   = ['']
 	for i in range(len(clientIds)):
 		if clientIds[i] == [clientId]:
 			service = discovery.build('sheets', 'v4', credentials=credentials, cache_discovery=False)
 			spreadsheet_id = '1Q6CgVm7u4oT4G0Hsc1gAqxBtOd4z9Auv34KCOG2ZRpc' 
 
-			ranges = "RUO with ID!C" + str(i+1)
+			ranges = "Sample Reception with ID!B" + str(i+1)
 			request = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=ranges)
 			response = request.execute()
 			row = response.get('values', [])[0][0]
-			if discovery.build('sheets', 'v4', credentials=credentials, cache_discovery=False).spreadsheets().values().get(spreadsheetId=spreadsheet_id, range="RUO with ID!H" + str(i+1)).execute().get('values', [])[0][0] == "PanCA Monitor":
-				inds.append(row)
+			inds.append(row)
 
-			ranges = "RUO with ID!B" + str(i+1)
+			ranges = "Sample Reception with ID!H" + str(i+1)
 			request = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=ranges)
 			response = request.execute()
 			row = response.get('values', [])[0][0]
-			if discovery.build('sheets', 'v4', credentials=credentials, cache_discovery=False).spreadsheets().values().get(spreadsheetId=spreadsheet_id, range="RUO with ID!H" + str(i+1)).execute().get('values', [])[0][0] == "PanCA Monitor":
-				date.append(row)
+			arr = row.split("/")
+			row = str(arr[2]) + str("/") + str(arr[0]) + str("/") + str(arr[1]) 
+			date.append(row)
 
-			ranges = "RUO with ID!Q" + str(i+1)
-			request = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=ranges)
-			response = request.execute()
-			if response.get('values', []) != []:
-				sampleCollectingSite[0] = response.get('values', [])[0][0]
 
-			ranges = "RUO with ID!S" + str(i+1)
-			request = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=ranges)
-			response = request.execute()
-			if response.get('values', []) != []:
-				vs[0] = response.get('values', [])[0][0]
-
-			ranges = "RUO with ID!K" + str(i+1)
-			request = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=ranges)
-			response = request.execute()
-			tumorType = ''
-			if response.get('values', []) != []:
-				tumorType = response.get('values', [])[0][0]
-
-			ranges = "RUO with ID!L" + str(i+1)
-			request = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=ranges)
-			response = request.execute()
-			tnm = ''
-			if response.get('values', []) != []:
-				tnm = response.get('values', [])[0][0]
-
-	return [inds, date, sampleCollectingSite, vs, tumorType, tnm]
+	return [inds, date]
 
 def fetchReportCount(credentials, inds):
 	service = discovery.build('sheets', 'v4', credentials=credentials, cache_discovery=False)
-	spreadsheet_id = '1D43UNSNqtMXGQ91OlKEXYwdyBXrF_nwogw81aeX6-I8' 
+	spreadsheet_id = '1vjTJ5e8ElREm6NHx2qQuhGuqUwwiREaFjMG3L12L8og' 
 
-	trfRange      = "RUO Patient Data!B:B"
+	trfRange      = "Report Generation 2!A:A"
 	trfRequest    = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=trfRange)
 	trfResponse   = trfRequest.execute()
 	trfId         = trfResponse.get('values', [])
 
-	sampleIdRange = "RUO Patient Data!C:C"
+	# this is a modified version from ruo report generation, which sample id was used to distinguish different tests with
+	# same ind sequence. whereas test date is used to distinguish different tests on CRC report generation. 
+	sampleIdRange = "Report Generation 2!B:B"
 	sampleRequest = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=sampleIdRange)
 	sampleResponse= sampleRequest.execute()
 	sampleId      = sampleResponse.get('values', [])
 
-	countRange    = "RUO Patient Data!R:R"
+	countRange    = "Report Generation 2!S:S"
 	countRequest  = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=countRange)
 	countResponse = countRequest.execute()
 	count         = countResponse.get('values', [])
 
+	scsRange      = "Report Generation 2!Q:Q"
+	scsRequest    = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=scsRange)
+	scsResponse   = scsRequest.execute()
+	scs           = scsResponse.get('values', [])
+
+	telRange      = "Report Generation 2!F:F"
+	telRequest    = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=telRange)
+	telResponse   = telRequest.execute()
+	tel           = telResponse.get('values', [])
+
+	emailRange    = "Report Generation 2!J:J"
+	emailRequest  = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=emailRange)
+	emailResponse = emailRequest.execute()
+	emails        = emailResponse.get('values', [])
+
+	vsRange       = "Report Generation 2!M:M"
+	vsRequest     = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=vsRange)
+	vsResponse    = vsRequest.execute()
+	vss           = vsResponse.get('values', [])
+
 	arr = []
 	founds = []
-	tumorInfo = []
-	tnm = ''
-	for j in range(len(inds)):
+	sampleCollectingSite = ''
+	telephone = ''
+	email = ''
+	vs = ''
+	for j in range(0,len(inds)):
 		flag = 0
-		# print(inds[j])
 		for i in range(len(trfId)):
-			if trfId[i][0] == inds[j]:
+			if trfId[i] == []:
+				raise ValueError("Some value on Google sheet is empty.")
+			if str(trfId[i][0]) == str(inds[j]):
 				for found in founds:
 					if found == sampleId[i][0]:
 						flag = 1
-						break;
+						break
 				if flag == 0:
-					# print(count[i])
-					# print(sampleId[i])
-					print(str(inds[j]) + "found with count: " + str(count[i][0]))
+					print(str(inds[j]) + "found with count: " + str(count[i][0]) + " sampleId: " + str(sampleId[i][0]))
 					arr.append(int(count[i][0]))
 					founds.append(sampleId[i][0])
-					# tnm = tnms[i][0]
+					if j == len(inds)-1:
+						if scs[i] != []:
+							sampleCollectingSite = scs[i][0]
+						if tel[i] != []:
+							telephone = tel[i][0]
+						if emails[i] != []:
+							email = emails[i][0]
+						if vss[i] != []:
+							vs = vss[i][0]
+					break
+				elif flag ==1:
+					flag = 0
+					continue
 
-				
-	# print(arr)
-	return arr
+	return arr, sampleCollectingSite, telephone, email, vs
 
-# def fetchTumorHistory(credentials, ind):
-# 	service = discovery.build('sheets', 'v4', credentials=credentials, cache_discovery=False)
-# 	spreadsheet_id = '1D43UNSNqtMXGQ91OlKEXYwdyBXrF_nwogw81aeX6-I8' 
 
-# 	trfRange         = "Sample Reception!B:B"
-# 	trfRequest       = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=trfRange)
-# 	trfResponse      = trfRequest.execute()
-# 	trfId            = trfResponse.get('values', [])
-
-# 	tumorTypeRange   = "Sample Reception!I:I"
-# 	tumorTypeRequest = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=tumorTypeRange)
-# 	tumorTypeResponse= tumorTypeRequest.execute()
-# 	tumorTypes       = tumorTypeResponse.get('values', [])
-
-# 	tnmRange         = "RUO Patient Data!J:J"
-# 	tnmRequest       = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=tnmRange)
-# 	tnmResponse      = tnmRequest.execute()
-# 	tnms             = tnmResponse.get('values', [])
-
-# 	tumorType = ''
-# 	tnm       = ''
-# 	for i in range(len(trfId)):
-# 		if trfId[i] == ind:
-# 			tumorType = tumorTypes[i][0]
-# 			tnm = tnms[i][0]
-# 	return tumorType, tnm
-
-# cred = init()
-# printRange(cred)
-
-# service = discovery.build('sheets', 'v4', credentials=credentials)
-# spreadsheet_id = '1Q6CgVm7u4oT4G0Hsc1gAqxBtOd4z9Auv34KCOG2ZRpc' 
-# ranges = "Client Info!B:B" 
-# request = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=ranges)
-# response = request.execute()
-# names = response.get('values', [])
+def printRange(credentials, ss, range):
+	service = discovery.build('sheets', 'v4', credentials=credentials)
+	spreadsheet_id = '1Q6CgVm7u4oT4G0Hsc1gAqxBtOd4z9Auv34KCOG2ZRpc' 
+	ranges = str(ss) + "!" + range  
+	request = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=ranges)
+	response = request.execute()
+	pprint(response.get('values', []))

@@ -180,7 +180,7 @@ td.CellOverride-12 {
 }
 td.CellOverride-13 {
 	vertical-align:middle;
-	height: 70px;
+	height: 100px;
 }
 p.ParaOverride-1 {
 	text-align:center;
@@ -284,10 +284,10 @@ span.CharOverride-3 {
 }
 span.CharOverride-4 {
 	color:#58595b;
-	font-family:"Museo Sans 700", sans-serif;
+	font-family:"微軟正黑體", sans-serif;
 	font-size:64px;
 	font-style:normal;
-	font-weight:600;
+	font-weight:900;
 }
 span.CharOverride-4_EN {
 	color:#58595b;
@@ -320,7 +320,7 @@ span.Cover_CharOverride-40 {
 	font-size:50px;
 	font-style:normal;
 	/*font-weight:600;*/
-	padding-left: 160px;
+	padding-left: 320px;
 	/*padding-top: 90px;*/
 }
 span.Cover_CharOverride-41 {
@@ -427,7 +427,7 @@ span.CharOverride-16 {
 	font-weight:normal;
 }
 span.CharOverride-17 {
-	font-family:"Museo Sans 300", sans-serif;
+	font-family:"微軟正黑體", sans-serif;
 	font-size:28px;
 	font-style:normal;
 	font-weight:300;
@@ -440,7 +440,7 @@ span.CharOverride-17_table {
 }
 span.CharOverride-18 {
 	font-family:"微軟正黑體", sans-serif;
-	font-size:24px;
+	font-size:30px;
 	font-style:normal;
 	font-weight:300;
 	line-height: 35px;
@@ -485,16 +485,60 @@ span.CharOverride-22 {
 .historyTableFont {
 	color:#005f9e;
 	font-family:"微軟正黑體", sans-serif;
-	font-size:24px;
+	font-size:40px;
 	font-style:normal;
 	font-weight:normal;
+	display: inline-block;
 }
-.historyTableFont_content {
+.historyTableFont_1 {
+	color:#005f9e;
+	font-family:"微軟正黑體", sans-serif;
+	font-size:30px;
+	font-style:normal;
+	font-weight:normal;
+	display: block;
+}
+.historyTableFont_content_1 {
 	color:#000000;
 	font-family:"微軟正黑體", sans-serif;
-	font-size:24px;
+	font-size:40px;
 	font-style:normal;
 	font-weight:normal;
+	display: inline-block;
+	border-bottom: solid;
+	width: 1100px;
+	margin-left: 100px;
+}
+.historyTableFont_content_2 {
+	color:#000000;
+	font-family:"微軟正黑體", sans-serif;
+	font-size:40px;
+	font-style:normal;
+	font-weight:normal;
+	display: inline-block;
+	border-bottom: solid;
+	width: 300px;
+	margin-left: 100px;
+	margin-right: 100px;
+}
+.historyTableFont_content_3 {
+	color:#000000;
+	font-family:"微軟正黑體", sans-serif;
+	font-size:40px;
+	font-style:normal;
+	font-weight:normal;
+	border-bottom: solid;
+	width: 300px;
+	display: inline-block;
+	margin-left: 100px;
+}
+.historyTableFont_content_4 {
+	color:#000000;
+	font-family:"微軟正黑體", sans-serif;
+	font-size:40px;
+	font-style:normal;
+	font-weight:normal;
+	display: block;
 }
 span.CharOverride-23 {
 	color:#005f9e;
@@ -511,7 +555,7 @@ span.CharOverride-24 {
 }
 span.CharOverride-24_CH {
 	font-family:"微軟正黑體", sans-serif;
-	font-size:35px;
+	font-size:28px;
 	font-style:normal;
 	font-weight:normal;
 }
@@ -634,7 +678,7 @@ div.right_EN{
 
 #_idContainer000 {
 	display: block;
-	height:12px;
+	height:20px;
 	background:#005f9e;
 	margin-top: 37px;
 }
@@ -652,7 +696,7 @@ div.right_EN{
 }
 #_idContainer0001 {
 	width:100%;
-	height:20px;
+	height:24px;
 	background:#005f9e;
 }
 #_idContainer001 {
@@ -679,7 +723,7 @@ div.right_EN{
 #cover_0{
 	display:inline-block;
 	width:100%;
-	margin-left: 50%;
+	margin-left: 35%;
 	margin-right: 10%;
 	margin-top: 30%;
 	margin-bottom: auto;
@@ -692,7 +736,7 @@ div.right_EN{
 	height: 120px;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 78.05%;
+	margin-top: 76.7%;
 	margin-bottom: auto;
 /*	border-style: solid;
 	border-width: medium;*/
@@ -810,16 +854,16 @@ img.center{
 	float: left;
 }
 #backCover{
-	width: 88%;
-	height:450px;
+	width: 100%;
 /*	border-style: solid;
 	border-width: medium;*/
-	margin-left: 10%;
-	margin-right: 2%;
 }
 img.left{
 	width: 100%;
 	display: block;
+}
+img.left1{
+	width:100%;
 }
 .info_header{
 	margin-left: 5%;
@@ -868,7 +912,7 @@ img.left{
 	width:400px;
 }
 #_idContainer003{
-	width:1200px;
+	width:1800px;
 }
 #_idContainer003_EN{
 	width:700px;
@@ -901,6 +945,14 @@ img.left{
 	height:50px;
 	width:276px;
 	float: left;
+}
+#_idContainer0071{
+	display:block;
+	height:80px;
+	width:100%;
+	float: left;
+	/*border-width: 1px;
+	border-style: solid;*/
 }
 #_idContainer010, #_idContainer013 {
 	display:inline-block;
@@ -1160,12 +1212,12 @@ img.coverPancaLogo{
 	width:800px;
 }
 img.topRightStamp{
-	width:500px;
+	width:380px;
+	padding-top: 50px;
 }
 img._idGenObjectAttribute-1 {
-	height:auto;
-	min-width:90%;
-	width:90.00%;
+	height:100%;
+	width:auto;
 }
 
 div._idGenObjectStyleOverride-1 {
@@ -1179,6 +1231,17 @@ div._idGenObjectStyleOverride-3 {
 	border-color:#58595b;
 	border-width: 1px;
 	border-style:solid;
+}
+#memoDiv{
+	/*border-bottom-right-radius:19px;
+	border-top-right-radius:19px;*/
+	border-radius: 10px;
+	border-width:1px;
+	border-style: solid;
+	height: 300px;
+	width: 87%;
+	margin-left: auto;
+	margin-right: 8%;
 }
 div._idGenObjectStyleOverride-4 {
 	background-color:#005f9e;
@@ -1270,7 +1333,8 @@ div._idGenObjectLayout-1 {
 }
 .pageNo{
 	/*padding-left: 300px;*/
-	margin-right: 40%;
+	margin-right: 50%;
+	padding-top: 30px;
 	float:right;
 	color: grey;
 	font-size: 22px;
@@ -1307,7 +1371,7 @@ div._idGenObjectLayout-1 {
 }
 #_idContainer054, #_idContainer055{
 	width: 100%;
-	padding-top: 20px;
+	padding-top: 100px;
 }
 #_idContainer1000{
 	width:40%;
@@ -1316,7 +1380,9 @@ div._idGenObjectLayout-1 {
 #lineChart{
 	width: 60%;
 	float: right;
-	padding-top: 5%;
+	padding-top: 1%;
+	/*border-style: solid;
+	border-width: 1px;*/
 }
 #electronicSignature{
 	width: 86%;
@@ -1346,7 +1412,9 @@ div._idGenObjectLayout-1 {
 	width: 90%;
 	margin-left:5%; 
     margin-right:5%;
-    padding-top: 50px;
+    padding-top: 100px;
+    /*border-style: solid;
+    border-width:1px;*/
 }
 #_idContainer067, #_idContainer083{
 	width: 92%;
@@ -1355,14 +1423,47 @@ div._idGenObjectLayout-1 {
     padding-top: 20px;  
 }
 #tumorType, #dateOfDiagnosis, #pathologicalDiagnosis, #tumorStage, #metastasisSite, #dateOfMostRecentTreatment{
-	font-size: 24px;
+	font-size: 40px;
 	padding-left: 10px;
 }
 #testingHistory{
 	width: 90%;
 	margin-left: 7%;
 	margin-right:3%;
-	height: 1000px;
+	height: 720px;
+	/*border-width: 1px;
+	border-style: solid;*/
+}
+div.homeIconDiv{
+	/*border-width: 1px;
+	border-style: solid;*/
+	display: block;
+	height:24px;
+	width: auto;
+	padding-left: 70px;
+	padding-top:100px;	
+}
+img.homeIcon{
+	height:100%;
+	width: auto;
+}
+span.pUnderline{
+	text-decoration: underline;
+}
+span.footerText{
+	font-size: 20px;
+	padding-top: auto;
+	padding-bottom: auto;
+	font-family:"微軟正黑體", sans-serif;
+}
+#clinicalAppPicDiv{
+	width:100%;
+	padding-top: 100px;
+	padding-right: 9%;
+	padding-left: 1%;
+}
+#clinicalAppPic{
+	width:90%;
 }
 #ctcLineChartImg{
 	width:100%;
@@ -1422,27 +1523,26 @@ div._idGenObjectLayout-1 {
 }
 #_idContainer086{
 	background-color:#005f9e;
-	border-bottom-right-radius:50px;
-	border-top-right-radius:50px;
+	border-bottom-right-radius:75px;
+	border-top-right-radius:75px;
 	border-width:0px;
-	height: 100px;
-	width: 70%;
+	height: 150px;
+	width: 90%;
 }
 #slogan{
-	width:70%;
-	margin-left: 10%;
+	width:97%;
+	margin-left: 5%;
 	margin-right: 20%;
-	padding-top: 25px;
+	padding-top: 50px;
 	font-size: 38px;
 	color:#ffffff;
-	font-family:"Museo Sans 700", sans-serif;
+	font-family:"微軟正黑體", sans-serif;
 	font-style:normal;
-	font-weight:600;
 }
 #idContainer110{
-	width:40%;
+	width:50%;
 	float:left;
-	padding-top: 20%;
+	padding-top: 10%;
 /*	border-width:1px;
 	border-style: solid;*/
 }
@@ -1483,5 +1583,5 @@ div._idGenObjectLayout-1 {
 	width:50%;
 }
 .eSignPicture{
-	width:800px;
+	width:100%;
 }
