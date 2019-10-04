@@ -4,7 +4,7 @@ BEFORE RUNNING:
 Install the Python client library for Google APIs by running
 `pip install --upgrade google-api-python-client`
 """
-from pprint import pprint
+# from pprint import pprint
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient import discovery
 import os.path
@@ -209,39 +209,3 @@ def fetchReportCount(credentials, inds):
 	# print(arr)
 	return arr
 
-# def fetchTumorHistory(credentials, ind):
-# 	service = discovery.build('sheets', 'v4', credentials=credentials, cache_discovery=False)
-# 	spreadsheet_id = '1D43UNSNqtMXGQ91OlKEXYwdyBXrF_nwogw81aeX6-I8' 
-
-# 	trfRange         = "Sample Reception!B:B"
-# 	trfRequest       = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=trfRange)
-# 	trfResponse      = trfRequest.execute()
-# 	trfId            = trfResponse.get('values', [])
-
-# 	tumorTypeRange   = "Sample Reception!I:I"
-# 	tumorTypeRequest = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=tumorTypeRange)
-# 	tumorTypeResponse= tumorTypeRequest.execute()
-# 	tumorTypes       = tumorTypeResponse.get('values', [])
-
-# 	tnmRange         = "RUO Patient Data!J:J"
-# 	tnmRequest       = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=tnmRange)
-# 	tnmResponse      = tnmRequest.execute()
-# 	tnms             = tnmResponse.get('values', [])
-
-# 	tumorType = ''
-# 	tnm       = ''
-# 	for i in range(len(trfId)):
-# 		if trfId[i] == ind:
-# 			tumorType = tumorTypes[i][0]
-# 			tnm = tnms[i][0]
-# 	return tumorType, tnm
-
-# cred = init()
-# printRange(cred)
-
-# service = discovery.build('sheets', 'v4', credentials=credentials)
-# spreadsheet_id = '1Q6CgVm7u4oT4G0Hsc1gAqxBtOd4z9Auv34KCOG2ZRpc' 
-# ranges = "Client Info!B:B" 
-# request = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=ranges)
-# response = request.execute()
-# names = response.get('values', [])

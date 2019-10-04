@@ -4,7 +4,7 @@ BEFORE RUNNING:
 Install the Python client library for Google APIs by running
 `pip install --upgrade google-api-python-client`
 """
-from pprint import pprint
+# from pprint import pprint
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient import discovery
 import os.path
@@ -31,7 +31,6 @@ def init():
 		with open('token.pickle', 'wb') as token:
 			pickle.dump(credentials, token)
 		return credentials
-
 
 def getId(credentials, name, bd):
 	# credentials: credentials
@@ -190,7 +189,6 @@ def fetchReportCount(credentials, inds):
 					continue
 
 	return arr, sampleCollectingSite, telephone, email, vs
-
 
 def printRange(credentials, ss, range):
 	service = discovery.build('sheets', 'v4', credentials=credentials)

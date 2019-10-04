@@ -532,6 +532,40 @@ span.CharOverride-22 {
 	display: inline-block;
 	margin-left: 100px;
 }
+.historyTableFont_content_1_EN {
+	color:#000000;
+	font-family:"微軟正黑體", sans-serif;
+	font-size:40px;
+	font-style:normal;
+	font-weight:normal;
+	display: inline-block;
+	border-bottom: solid;
+	width: 980px;
+	margin-left: 100px;
+}
+.historyTableFont_content_2_EN {
+	color:#000000;
+	font-family:"微軟正黑體", sans-serif;
+	font-size:40px;
+	font-style:normal;
+	font-weight:normal;
+	display: inline-block;
+	border-bottom: solid;
+	width: 250px;
+	margin-left: 25px;
+	margin-right: 70px;
+}
+.historyTableFont_content_3_EN {
+	color:#000000;
+	font-family:"微軟正黑體", sans-serif;
+	font-size:40px;
+	font-style:normal;
+	font-weight:normal;
+	border-bottom: solid;
+	width: 250px;
+	display: inline-block;
+	margin-left: 70px;
+}
 .historyTableFont_content_4 {
 	color:#000000;
 	font-family:"微軟正黑體", sans-serif;
@@ -682,6 +716,12 @@ div.right_EN{
 	background:#005f9e;
 	margin-top: 37px;
 }
+#_idContainer000_CRC_cn {
+	display: block;
+	height:22px;
+	background:#005f9e;
+	margin-top: 37px;
+}
 #_idContainer000_SK {
 	display: block;
 	height:25px;
@@ -736,7 +776,7 @@ div.right_EN{
 	height: 120px;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 76.7%;
+	margin-top: 76.2%;
 	margin-bottom: auto;
 /*	border-style: solid;
 	border-width: medium;*/
@@ -954,6 +994,7 @@ img.left1{
 	/*border-width: 1px;
 	border-style: solid;*/
 }
+
 #_idContainer010, #_idContainer013 {
 	display:inline-block;
 	height:17px;
@@ -1211,6 +1252,10 @@ img.left1{
 img.coverPancaLogo{
 	width:800px;
 }
+img.coverPancaLogo_EN{
+	width:600px;
+	padding-left: 200px;
+}
 img.topRightStamp{
 	width:380px;
 	padding-top: 50px;
@@ -1443,6 +1488,15 @@ div.homeIconDiv{
 	padding-left: 70px;
 	padding-top:100px;	
 }
+div.homeIconDiv_EN{
+	/*border-width: 1px;
+	border-style: solid;*/
+	display: block;
+	height:24px;
+	width: auto;
+	padding-left: 1200px;
+	padding-top:100px;	
+}
 img.homeIcon{
 	height:100%;
 	width: auto;
@@ -1461,6 +1515,12 @@ span.footerText{
 	padding-top: 100px;
 	padding-right: 9%;
 	padding-left: 1%;
+}
+#clinicalAppPicDiv_EN{
+	width:100%;
+	padding-top: 50px;
+	padding-right: 5%;
+	padding-left: 5%;
 }
 #clinicalAppPic{
 	width:90%;
@@ -1521,6 +1581,7 @@ span.footerText{
 /*	border-width:1px;
 	border-style: solid;*/
 }
+
 #_idContainer086{
 	background-color:#005f9e;
 	border-bottom-right-radius:75px;

@@ -15,7 +15,7 @@ from os import getcwd
 
 
 
-def getLineChart(id, x, y):
+def getLineChart(template, x, y):
 	if(len(x) != len(y)):
 		return
 	base = 4
@@ -54,8 +54,12 @@ def getLineChart(id, x, y):
 
 	plt.xticks(range(len(pseudoX)), pseudoX)
 	plt.yticks(ytick, ytick)
-	plt.xlabel("檢測日期")
-	plt.ylabel("CTC 顆數")
+	if template == "CRC_EN_Template.html":
+		plt.xlabel("Testing Date")
+		plt.ylabel("CTC Count")
+	else:
+		plt.xlabel("檢測日期")
+		plt.ylabel("CTC 顆數")
 
 	y0= [ytick[0] for i in range(len(pseudoY))]
 	y1= [ytick[1] for i in range(len(pseudoY))]
@@ -94,7 +98,7 @@ def printPdfFromHtml(clientInfo, count, date, filename, template, directory):
 		'page-size': 'A4'
 		}
 	soup = BeautifulSoup(open('CRC Monitor HTML\\' + template, "r", encoding = "utf-8").read(), "html5lib")
-	soup = cannedResponse(soup, template, count)
+	soup = cannedResponse(soup, template, count, clientInfo)
 	soup = fillInById(soup, clientInfo, count, date)
 	
 	with open("CRC Monitor HTML\\htmlWithInfo.html", "w", encoding='utf-8') as file:
@@ -102,8 +106,12 @@ def printPdfFromHtml(clientInfo, count, date, filename, template, directory):
 	# print(soup.prettify().encode('utf-8'))
 	pdfkit.from_file('CRC Monitor HTML\\htmlWithInfo.html', directory + "/" + filename, configuration=config, options = option)
 
-def cannedResponse(soup, template, count):
+def cannedResponse(soup, template, count, clientInfo):
 	if template == "CRC_CH_Template.html":
+		if clientInfo[3] == 'M':
+			soup.find(id='gender').string               = '男'
+		if clientInfo[3] == 'F':
+			soup.find(id='gender').string               = '女'
 		if len(count) >=2:
 			if count[-1] >= 4 and count[-2] >= 4:
 				soup.find(id='currentCtcTrend').string  = '高'
@@ -128,6 +136,7 @@ def cannedResponse(soup, template, count):
 				soup.find(id='comments').string         = '您目前的循環腫瘤細胞數目低於標準值。然而腸追蹤檢測至少需連續二次檢測的數據來觀察循環腫瘤細胞變化，以監測疾病的發展。建議您仍持續每三個月接受腸追蹤檢測。期間倘若您的健康發生變化，請立即尋求專業醫師的協助。'
 			
 	elif template == "CRC_EN_Template.html":
+		soup.find(id='gender').string                   = clientInfo[3]
 		if len(count) >=2:
 			if count[-1] >= 4 and count[-2] >= 4:
 				soup.find(id='currentCtcTrend').string  = 'High'
@@ -151,6 +160,10 @@ def cannedResponse(soup, template, count):
 				soup.find(id='recommendation').string   = '每三個月持續追蹤'
 				soup.find(id='comments').string         = '您目前的循環腫瘤細胞數目低於標準值。然而腸追蹤檢測至少需連續二次檢測的數據來觀察循環腫瘤細胞變化，以監測疾病的發展。建議您仍持續每三個月接受腸追蹤檢測。期間倘若您的健康發生變化，請立即尋求專業醫師的協助。'
 	elif template == "CRC_simplified_CH_Template.html":
+		if clientInfo[3] == 'M':
+			soup.find(id='gender').string               = '男'
+		if clientInfo[3] == 'F':
+			soup.find(id='gender').string               = '女'
 		if len(count) >=2:
 			if count[-1] >= 4 and count[-2] >= 4:
 				soup.find(id='currentCtcTrend').string  = '高'
@@ -184,10 +197,6 @@ def fillInById(soup, clientInfo, count, date):
 	soup.find(id='patientName').string              = clientInfo[0]
 	soup.find(id='idNumber').string                 = clientInfo[5]
 	soup.find(id='dateOfBirth').string              = bdYear + "/" + bdMonth + "/" + bdDay
-	if clientInfo[3] == 'M':
-		soup.find(id='gender').string               = '男'
-	if clientInfo[3] == 'F':
-		soup.find(id='gender').string               = '女'	
 	soup.find(id='patientPhoneNumber').string       = clientInfo[8]
 	soup.find(id='patientEmail').string             = clientInfo[9]
 	soup.find(id='nameOfLab').string                = clientInfo[6]
@@ -276,7 +285,7 @@ def press(button):
 			# collection date 
 			# x,y = fgs.getRecord(credential, clientId)
 			# Create new threads
-			thread1 = myThread(1, "Thread_getLineChart", [getLineChart, clientId, date.copy(), count.copy()])
+			thread1 = myThread(1, "Thread_getLineChart", [getLineChart, template, date.copy(), count.copy()])
 			thread2 = myThread(2, "Thread_printPdfFromHtml", [printPdfFromHtml, clientInfo, count.copy(), date.copy(), filename, template, directory])
 
 

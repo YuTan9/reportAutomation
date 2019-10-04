@@ -14,7 +14,7 @@ import datetime
 import re
 
 
-def getLineChart(id, x, y):
+def getLineChart(template, x, y):
 	if(len(x) != len(y)):
 		return
 	base = y[0]
@@ -52,8 +52,13 @@ def getLineChart(id, x, y):
 
 	plt.xticks(range(len(pseudoX)), pseudoX)
 	plt.yticks(ytick, ytick)
-	plt.xlabel("檢測日期")
-	plt.ylabel("CTC 顆數")
+	if template == "PanCA_EN_Template.html":
+		plt.xlabel("Testing Date")
+		plt.ylabel("CTC Count")
+	else:
+		plt.xlabel("檢測日期")
+		plt.ylabel("CTC 顆數")
+	
 
 	y0= [ytick[0] for i in range(len(pseudoY))]
 	y1= [ytick[1] for i in range(len(pseudoY))]
@@ -203,7 +208,7 @@ def press(button):
 			# collection date 
 			# x,y = fgs.getRecord(credential, clientId)
 			# Create new threads
-			thread1 = myThread(1, "Thread_getLineChart", [getLineChart, clientId, date.copy(), count.copy()])
+			thread1 = myThread(1, "Thread_getLineChart", [getLineChart, template, date.copy(), count.copy()])
 			thread2 = myThread(2, "Thread_printPdfFromHtml", [printPdfFromHtml, clientInfo, count.copy(), date.copy(), filename, template, directory])
 
 
