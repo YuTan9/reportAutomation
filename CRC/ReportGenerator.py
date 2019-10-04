@@ -321,6 +321,9 @@ def executeThreadFunc(args):
 	elif args[0] == fgs.fetchReportCount:
 		fgs.fetchReportCount(args[1], args[2])
 
+def stop():
+	app.stop()
+
 class myThread (threading.Thread):
 	def __init__(self, threadID, name, args):
 		threading.Thread.__init__(self)
@@ -360,5 +363,6 @@ app.addDirectoryEntry("Save at")
 app.setEntryDefault("Save at", "(Default: current directory)")
 app.addButtons(["Submit", "Cancel"], press)
 app.enableEnter(press)
+app.bindKey("Escape", stop)
 app.setFocus("Name")
 app.go()

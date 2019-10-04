@@ -710,9 +710,15 @@ div.right_EN{
 	width: 90%;
 }
 
+#_idContainer000_CRC_CH {
+	display: block;
+	height:25px;
+	background:#005f9e;
+	margin-top: 37px;
+}
 #_idContainer000 {
 	display: block;
-	height:20px;
+	height:25px;
 	background:#005f9e;
 	margin-top: 37px;
 }
@@ -777,6 +783,17 @@ div.right_EN{
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 76.2%;
+	margin-bottom: auto;
+/*	border-style: solid;
+	border-width: medium;*/
+}
+#cover_1_CRC_EN{
+	display:inline-block;
+	width:100%;
+	height: 120px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 75.9%;
 	margin-bottom: auto;
 /*	border-style: solid;
 	border-width: medium;*/

@@ -11,4 +11,4 @@ option = {
 	'page-size': 'A4'
 	}
 
-pdfkit.from_file('CRC Monitor HTML\\' + filename, "CRC_simplified_CH_Template.pdf", configuration=config, options = option)
+pdfkit.from_file('CRC Monitor HTML\\' + filename, "CRC_Template.pdf", configuration=config, options = option)

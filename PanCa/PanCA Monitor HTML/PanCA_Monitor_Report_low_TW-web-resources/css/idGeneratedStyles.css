@@ -1329,6 +1329,7 @@ div._idGenObjectLayout-1 {
 	float:left;
 	width: 70%;
 }
+
 #electronicSignatureRight{
 	float:right;
 	width: 20%;
@@ -1484,4 +1485,7 @@ div._idGenObjectLayout-1 {
 }
 .eSignPicture{
 	width:800px;
+}
+.eSignPicture_USA{
+	width:100%;
 }

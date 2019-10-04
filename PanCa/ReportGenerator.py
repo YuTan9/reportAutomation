@@ -8,10 +8,10 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import threading
-import time
 from bs4 import BeautifulSoup
 import datetime
-import re
+from re import match
+from os import getcwd
 
 
 def getLineChart(template, x, y):
@@ -52,7 +52,7 @@ def getLineChart(template, x, y):
 
 	plt.xticks(range(len(pseudoX)), pseudoX)
 	plt.yticks(ytick, ytick)
-	if template == "PanCA_EN_Template.html":
+	if template == "PanCA_EN_Template.html" or template == "USA_PanCA_EN_Template.html":
 		plt.xlabel("Testing Date")
 		plt.ylabel("CTC Count")
 	else:
@@ -97,14 +97,14 @@ def printPdfFromHtml(clientInfo, count, date, filename, template, directory):
 		'page-size': 'A4'
 		}
 	soup = BeautifulSoup(open('PanCA Monitor HTML\\' + template, "r", encoding = "utf-8").read(), "html5lib")
-	soup = fillInById(soup, clientInfo, count, date)
+	soup = fillInById(soup, clientInfo, count, date, template)
 
 	with open("PanCA Monitor HTML\\htmlWithInfo.html", "w", encoding='utf-8') as file:
 		file.write(str(soup))
 	# print(soup.prettify().encode('utf-8'))
 	pdfkit.from_file('PanCA Monitor HTML\\htmlWithInfo.html', directory + "/" + filename, configuration=config, options = option)
 
-def fillInById(soup, clientInfo, count, date):
+def fillInById(soup, clientInfo, count, date, template):
 	today = datetime.date.today().strftime("%Y/%m/%d")
 	bdMonth, bdDay, bdYear = clientInfo[1].split("/")
 	#First Page
@@ -116,9 +116,13 @@ def fillInById(soup, clientInfo, count, date):
 		soup.find(id='gender').string               = '男'
 	if clientInfo[3] == 'F':
 		soup.find(id='gender').string               = '女'	
+
+	if template == "PanCA_EN_Template.html":
+		soup.find(id='gender').string               = clientInfo[3]
+	if template == "USA_PanCA_EN_Template.html":
+		soup.find(id='gender').string               = clientInfo[3]
 	soup.find(id='patientPhoneNumber').string       = ''
 	soup.find(id='patientEmail').string             = ''
-	soup.find(id='nameOfLab').string                = clientInfo[6]
 	soup.find(id='labPhoneNumber').string           = ''
 	soup.find(id='nameOfPhysician').string          = clientInfo[7]
 	soup.find(id='dateOfCollection').string         = date[len(date)-1]
@@ -130,7 +134,11 @@ def fillInById(soup, clientInfo, count, date):
 
 	soup.find(id='comments').string                 = ''
 	soup.find(id='eSignDate1').string               = today
-	soup.find(id='eSignDate2').string               = today
+
+	if template != "USA_PanCA_EN_Template.html":
+		soup.find(id='eSignDate2').string               = today
+		soup.find(id='nameOfLab').string                = clientInfo[6]
+
 	soup.find(id='tumorType').string                = ''
 	soup.find(id='dateOfDiagnosis').string          = ''
 	soup.find(id='pathologicalDiagnosis').string    = ''
@@ -164,7 +172,7 @@ def press(button):
 		filename = str(app.entry("Filename"))
 		if filename == '':
 			filename = 'report.pdf'
-		if not re.match('^.*\.pdf$', filename):
+		if not match('^.*\.pdf$', filename):
 			filename = filename + ".pdf"
 		print("Filename: " + filename)
 
@@ -186,12 +194,17 @@ def press(button):
 
 		elif app.getOptionBox("Templates") == "English":
 			template = "PanCA_EN_Template.html"
-			
+		
+		elif app.getOptionBox("Templates") == "English - overseas":
+			template = "USA_PanCA_EN_Template.html"
 		else:
 			app.errorBox("Not found", "Error happened in initializing templates.")	
 			return
 
 		directory = app.entry("Save at")
+		if directory == '':
+			directory = getcwd()
+		print("Output dir: " + directory)
 		print("Press Ctrl+C (twice or more)to quit")
 
 		credential = fgs.init()
@@ -244,6 +257,9 @@ def executeThreadFunc(args):
 	elif args[0] == fgs.fetchReportCount:
 		fgs.fetchReportCount(args[1], args[2])
 
+def stop():
+	app.stop()
+
 class myThread (threading.Thread):
 	def __init__(self, threadID, name, args):
 		threading.Thread.__init__(self)
@@ -278,9 +294,10 @@ app.addLabelEntry("Filename")
 app.setEntryDefault("Name", "Enter Name")
 app.setEntryDefault("Birthday", "Birthday in YYYY/MM/DD")
 app.setEntryDefault("Filename", "The filename you want to save as. (Default: report.pdf)")
-app.addLabelOptionBox("Templates", ["Traditional Chinese", "Simplified Chinese", "Captain", "Elite", "Shin Kong", "English"])
+app.addLabelOptionBox("Templates", ["Traditional Chinese", "Simplified Chinese", "Captain", "Elite", "Shin Kong", "English", "English - overseas"])
 app.addDirectoryEntry("Save at")
 app.addButtons(["Submit", "Cancel"], press)
 app.enableEnter(press)
+app.bindKey("Escape", stop)
 app.setFocus("Name")
 app.go()
