@@ -11,6 +11,8 @@ import os.path
 import pickle
 from google.auth.transport.requests import Request
 
+# initialization of the google sheet fetching component
+# https://developers.google.com/sheets/api/quickstart/python
 def init():
 	SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 	credentials = None
@@ -32,10 +34,12 @@ def init():
 			pickle.dump(credentials, token)
 		return credentials
 
+# Fetching Client ID by given name and birthday.
 def getId(credentials, name, bd):
-	# credentials: credentials
-	# name: [name]
-	# bd: [bd]
+	# parameter types
+	# 	credentials: credentials
+	# 	name: [name]
+	# 	bd: [bd]
 	service = discovery.build('sheets', 'v4', credentials=credentials, cache_discovery=False)
 	spreadsheet_id = '1Q6CgVm7u4oT4G0Hsc1gAqxBtOd4z9Auv34KCOG2ZRpc' 
 	ranges = "Client Info!B:B" 
@@ -82,6 +86,8 @@ def getId(credentials, name, bd):
 
 	return "Not found", '', ''
 
+# Fetching all tests done by the given Client ID
+# Returning the date of each tests and the sample IDs of the tests
 def getRecord(credentials, clientId):
 	service = discovery.build('sheets', 'v4', credentials=credentials, cache_discovery=False)
 	spreadsheet_id = '1Q6CgVm7u4oT4G0Hsc1gAqxBtOd4z9Auv34KCOG2ZRpc' 
@@ -113,6 +119,8 @@ def getRecord(credentials, clientId):
 
 	return [inds, date]
 
+# By given sample ID numbers, fetch each of the values of report count
+# Returning report count, sample collecting site, telephone, email, and V.S.
 def fetchReportCount(credentials, inds):
 	service = discovery.build('sheets', 'v4', credentials=credentials, cache_discovery=False)
 	spreadsheet_id = '1vjTJ5e8ElREm6NHx2qQuhGuqUwwiREaFjMG3L12L8og' 
@@ -122,7 +130,7 @@ def fetchReportCount(credentials, inds):
 	trfResponse   = trfRequest.execute()
 	trfId         = trfResponse.get('values', [])
 
-	# this is a modified version from ruo report generation, which sample id was used to distinguish different tests with
+	# this is a modified version from PanCa report generation, which sample id was used to distinguish different tests with
 	# same ind sequence. whereas test date is used to distinguish different tests on CRC report generation. 
 	sampleIdRange = "Report Generation 2!B:B"
 	sampleRequest = service.spreadsheets().values().get(spreadsheetId=spreadsheet_id, range=sampleIdRange)
@@ -190,6 +198,10 @@ def fetchReportCount(credentials, inds):
 
 	return arr, sampleCollectingSite, telephone, email, vs
 
+
+# A test function on fetching assigned range on assigned sheet
+# need to import pprint for running this function.
+# this is not actually run on the application, merely for debugging
 def printRange(credentials, ss, range):
 	service = discovery.build('sheets', 'v4', credentials=credentials)
 	spreadsheet_id = '1Q6CgVm7u4oT4G0Hsc1gAqxBtOd4z9Auv34KCOG2ZRpc' 

@@ -1,7 +1,8 @@
 import pdfkit
+import sys
 path_wkthmltopdf = r'wkhtmltopdf\\bin\\wkhtmltopdf.exe'
 # filename = input('file name: ')
-filename = "USA_PanCA_EN_Template.html"
+filename = str(sys.argv[1])
 config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
 option = {
 	'margin-top': '0mm',
@@ -11,4 +12,4 @@ option = {
 	'page-size': 'A4'
 	}
 
-pdfkit.from_file('PanCA Monitor HTML\\' + filename, "USA_PanCA_EN_Template.pdf", configuration=config, options = option)
+pdfkit.from_file(filename, "USA_PanCA_EN_Template.pdf", configuration=config, options = option)

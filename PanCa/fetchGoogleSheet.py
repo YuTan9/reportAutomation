@@ -11,6 +11,8 @@ import os.path
 import pickle
 from google.auth.transport.requests import Request
 
+# initialization of the google sheet fetching component
+# https://developers.google.com/sheets/api/quickstart/python
 def init():
 	SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 	credentials = None
@@ -32,6 +34,9 @@ def init():
 			pickle.dump(credentials, token)
 		return credentials
 	
+# A test function on fetching assigned range on assigned sheet
+# need to import pprint for running this function.
+# this is not actually run on the application, merely for debugging
 def printRange(credentials, ss, range):
 	service = discovery.build('sheets', 'v4', credentials=credentials)
 	spreadsheet_id = '1Q6CgVm7u4oT4G0Hsc1gAqxBtOd4z9Auv34KCOG2ZRpc' 
@@ -40,21 +45,13 @@ def printRange(credentials, ss, range):
 	response = request.execute()
 	pprint(response.get('values', []))
 
-	# PS C:\Users\thoma\Desktop\Code\reportGenerator> python .\googlescripttest.py
-	# [['TRF ID', 'Collection Date'],
-	#  ['IND905675', '2017/10/03'],
-	#  ['IND905675', '2017/10/03'],
-	#  ['IND906234', '2017/11/13'],
-	#  ['IND906234', '2017/11/13'],
-	#  ['IND906335', '2018/01/25'],
-	#  ['IND906335', '2018/01/25'],
-	#  ['IND905818', '2018/03/22'],
-	#  ['IND908693', '2018/08/22'],
 
+# Fetching Client ID by given name and birthday.
 def getId(credentials, name, bd):
-	# credentials: credentials
-	# name: [name]
-	# bd: [bd]
+	# parameter types
+	# 	credentials: credentials
+	# 	name: [name]
+	# 	bd: [bd]
 	service = discovery.build('sheets', 'v4', credentials=credentials, cache_discovery=False)
 	spreadsheet_id = '1Q6CgVm7u4oT4G0Hsc1gAqxBtOd4z9Auv34KCOG2ZRpc' 
 	ranges = "Client Info!B:B" 
@@ -101,6 +98,8 @@ def getId(credentials, name, bd):
 
 	return "Not found", '', ''
 
+# Fetching all tests done by the given Client ID
+# Returning the Sample ID, date, Sample Collecting Site, V.S., Tumor Type, TNM
 def getRecord(credentials, clientId):
 	service = discovery.build('sheets', 'v4', credentials=credentials, cache_discovery=False)
 	spreadsheet_id = '1Q6CgVm7u4oT4G0Hsc1gAqxBtOd4z9Auv34KCOG2ZRpc' 
@@ -159,6 +158,8 @@ def getRecord(credentials, clientId):
 
 	return [inds, date, sampleCollectingSite, vs, tumorType, tnm]
 
+# By given sample ID numbers, fetch each of the values of report count
+# Returning report count
 def fetchReportCount(credentials, inds):
 	service = discovery.build('sheets', 'v4', credentials=credentials, cache_discovery=False)
 	spreadsheet_id = '1D43UNSNqtMXGQ91OlKEXYwdyBXrF_nwogw81aeX6-I8' 

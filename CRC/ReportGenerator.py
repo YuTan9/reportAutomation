@@ -1,6 +1,10 @@
-# pack to exe: powershell run: auto-py-to-exe
-# one file is not recommended, use one directory instead.
-# include the additional files on the run (icon.png)
+# how to pack to exe: 
+# on powershell run: auto-py-to-exe
+# https://pypi.org/project/auto-py-to-exe/
+# configuration json file is included in this folder,
+# apply configuration by going into advance menu and include the json file
+# one file option is not recommended, use one directory instead.
+# include additional files on the run (html folders, other python files, and etc.)
 from appJar import gui
 import fetchGoogleSheet as fgs
 import pdfkit
@@ -14,27 +18,26 @@ from re import match
 from os import getcwd
 
 
-
+# Draw the line chart of report count trend.
 def getLineChart(template, x, y):
 	if(len(x) != len(y)):
 		return
+	# for CRC the baseline is always 4
 	base = 4
+	# CRC only consider the most recent 4 tests
 	while len(x) > 4:
 		x = x[1:]
 	while len(y) > 4:
 		y = y[1:]
 
+
+	# pseudoX, pseudoY is for drawing the x-axis
 	pseudoX = x.copy()
 	pseudoY = y.copy()
-
 	if len(x) < 4:
 		pseudoX.append(' ')
 		pseudoY.append(y[len(y)-1])
 
-	# print(x)
-	# print(pseudoX)
-	# print(y)
-	# print(pseudoY)
 
 	plt.style.use('fast')
 	fig = plt.figure(figsize = [5,5])
@@ -51,6 +54,7 @@ def getLineChart(template, x, y):
 	for i in range(8):
 		ytick.append(i*ticks)
 	ytick.sort()
+	# 
 
 	plt.xticks(range(len(pseudoX)), pseudoX)
 	plt.yticks(ytick, ytick)
@@ -79,14 +83,17 @@ def getLineChart(template, x, y):
 	plt.plot(pseudoX,y7, '-', color='black', linewidth=1)
 
 	base = [base for i in range(len(pseudoY))]
-	plt.plot(pseudoX, base, '-', color='red', linewidth=2)
+	plt.plot(pseudoX, base, '-', color='red', linewidth=4)
 
 	plt.plot(x, y, '-', color='black', linewidth=2, markersize=1)
 	for i in range(len(x)):
-		plt.plot(x[i], y[i], 'o', color='black')
+		plt.plot(x[i], y[i], 'o', color='black', markersize = 10)
+	# tried for saving picture in specified id, however needs to configurate the html file
+	# saving as tmp is easier
 	# print("Saving picture: " + str(id))
 	fig.savefig("tmp.jpg",figsize=(7, 7), dpi=1200)
 
+# Print html to pdf with the data fetched from google sheet
 def printPdfFromHtml(clientInfo, count, date, filename, template, directory):
 	path_wkthmltopdf = r'wkhtmltopdf\\bin\\wkhtmltopdf.exe'
 	config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
@@ -98,6 +105,7 @@ def printPdfFromHtml(clientInfo, count, date, filename, template, directory):
 		'page-size': 'A4'
 		}
 	soup = BeautifulSoup(open('CRC Monitor HTML\\' + template, "r", encoding = "utf-8").read(), "html5lib")
+	# Doc of functions writen below
 	soup = cannedResponse(soup, template, count, clientInfo)
 	soup = fillInById(soup, clientInfo, count, date)
 	
@@ -106,6 +114,7 @@ def printPdfFromHtml(clientInfo, count, date, filename, template, directory):
 	# print(soup.prettify().encode('utf-8'))
 	pdfkit.from_file('CRC Monitor HTML\\htmlWithInfo.html', directory + "/" + filename, configuration=config, options = option)
 
+# Filling in blanks that has fix values determined by conditions of the patient
 def cannedResponse(soup, template, count, clientInfo):
 	if template == "CRC_CH_Template.html":
 		if clientInfo[3] == 'M':
@@ -188,6 +197,7 @@ def cannedResponse(soup, template, count, clientInfo):
 				soup.find(id='comments').string         = '您目前的循环肿瘤细胞数目低于标准值。然而肠追踪检测至少需连续二次检测的数据来观察循环肿瘤细胞变化，以监测疾病的发展。建议您仍持续每三个月接受肠追踪检测。期间倘若您的健康发生变化，请立即寻求专业医师的协助。'
 	return soup		
 
+# Filling in blanks according to the data fetched from google sheet
 def fillInById(soup, clientInfo, count, date):
 	#clientInfo = [name, bd, clientId, gender, inds[len(inds)-1], twId, sampleCollectingSite, vs, telephone, email]
 	today = datetime.date.today().strftime("%Y/%m/%d")
@@ -210,7 +220,7 @@ def fillInById(soup, clientInfo, count, date):
 
 
 	soup.find(id='eSignDate1').string               = today
-	soup.find(id='eSignDate2').string               = today
+	# soup.find(id='eSignDate2').string               = today
 	# soup.find(id='tumorType').string                = ''
 	# soup.find(id='dateOfDiagnosis').string          = ''
 	# soup.find(id='pathologicalDiagnosis').string    = ''
@@ -231,11 +241,17 @@ def fillInById(soup, clientInfo, count, date):
 
 	return soup
 
+# Upon the "Submit", or "Cancel" button pressed following procedures will be executed
 def press(button):
+	# Stop app if Cancel button hit
 	if button == "Cancel":
 		app.stop()
+	# Generate report if Submit
 	else:
+		# Appjar interface will crash due to the other threads eating up the memory
+		# so hide the intertface prevent user interupt
 		app.hide()
+		# Getting user input
 		name = str(app.entry("Name"))
 		bd = str(app.entry("Birthday"))
 		bd = bd.split("/")[1] + "/" + bd.split("/")[2] + "/" + bd.split("/")[0]
@@ -251,13 +267,10 @@ def press(button):
 		template = ''
 		if app.getOptionBox("Templates") == "Traditional Chinese":
 			template = "CRC_CH_Template.html"
-
 		elif app.getOptionBox("Templates") == "Simplified Chinese":
 			template = "CRC_simplified_CH_Template.html"
-
 		elif app.getOptionBox("Templates") == "English":
 			template = "CRC_EN_Template.html"
-			
 		else:
 			app.errorBox("Not found", "Error happened in initializing templates.")	
 			return
@@ -269,7 +282,9 @@ def press(button):
 		print("Output dir: " + directory)
 		print("Press Ctrl+C (twice or more)to quit")
 
+		# Fetch google sheet component initialize
 		credential = fgs.init()
+		# Get data needed for filling the blanks
 		clientId, gender, twId = fgs.getId(credential, [name], [bd])
 		if clientId != "Not found":
 			print('client id: ' + clientId)
@@ -284,7 +299,8 @@ def press(button):
 			
 			# collection date 
 			# x,y = fgs.getRecord(credential, clientId)
-			# Create new threads
+			# Create new threads for running getLineChart() and printPdfFromHtml(),
+			# this also prevents resource contention that happens sometimes that eventually crash the program
 			thread1 = myThread(1, "Thread_getLineChart", [getLineChart, template, date.copy(), count.copy()])
 			thread2 = myThread(2, "Thread_printPdfFromHtml", [printPdfFromHtml, clientInfo, count.copy(), date.copy(), filename, template, directory])
 
@@ -313,17 +329,8 @@ def press(button):
 			app.clearAllEntries(callFunction=False)
 		app.show()
 
-def executeThreadFunc(args):
-	if args[0] == getLineChart:
-		getLineChart(args[1], args[2], args[3])
-	elif args[0] == printPdfFromHtml:
-		printPdfFromHtml(args[1], args[2], args[3], args[4], args[5], args[6])
-	elif args[0] == fgs.fetchReportCount:
-		fgs.fetchReportCount(args[1], args[2])
 
-def stop():
-	app.stop()
-
+# Threading function and class
 class myThread (threading.Thread):
 	def __init__(self, threadID, name, args):
 		threading.Thread.__init__(self)
@@ -342,6 +349,18 @@ class myThread (threading.Thread):
 		# Free lock to release next thread
 		threadLock.release()
 		print(self.name + " released lock.")
+
+def executeThreadFunc(args):
+	if args[0] == getLineChart:
+		getLineChart(args[1], args[2], args[3])
+	elif args[0] == printPdfFromHtml:
+		printPdfFromHtml(args[1], args[2], args[3], args[4], args[5], args[6])
+	elif args[0] == fgs.fetchReportCount:
+		fgs.fetchReportCount(args[1], args[2])
+
+# For binding escape key on ui
+def stop():
+	app.stop()
 
 ###############
 #MAIN FUNCTION#

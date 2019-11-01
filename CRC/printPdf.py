@@ -1,7 +1,8 @@
 import pdfkit
+import sys
+# Print to pdf file with no blanks filled from a html file
 path_wkthmltopdf = r'wkhtmltopdf\\bin\\wkhtmltopdf.exe'
-# filename = input('file name: ')
-filename = "CRC_EN_Template.html"
+filename = str(sys.argv[1])
 config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
 option = {
 	'margin-top': '0mm',
@@ -11,4 +12,4 @@ option = {
 	'page-size': 'A4'
 	}
 
-pdfkit.from_file('CRC Monitor HTML\\' + filename, "CRC_Template.pdf", configuration=config, options = option)
+pdfkit.from_file(filename, "CRC_Template.pdf", configuration=config, options = option)

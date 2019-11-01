@@ -1,6 +1,10 @@
-# pack to exe: powershell run: auto-py-to-exe
-# one file is not recommended, use one directory instead.
-# include the additional files on the run (icon.png)
+# how to pack to exe: 
+# on powershell run: auto-py-to-exe
+# https://pypi.org/project/auto-py-to-exe/
+# configuration json file is included in this folder,
+# apply configuration by going into advance menu and include the json file
+# one file option is not recommended, use one directory instead.
+# include additional files on the run (html folders, other python files, and etc.)
 from appJar import gui
 import fetchGoogleSheet as fgs
 import pdfkit
@@ -13,16 +17,19 @@ import datetime
 from re import match
 from os import getcwd
 
-
+# Draw the line chart of report count trend.
 def getLineChart(template, x, y):
 	if(len(x) != len(y)):
 		return
+	# Panca consider the first count of the latest 6 tests as the baseline
 	base = y[0]
 	while len(x) > 6:
 		x = x[1:]
 	while len(y) > 6:
 		y = y[1:]
 
+
+	# pseudoX, pseudoY is for drawing the x-axis
 	pseudoX = x.copy()
 	pseudoY = y.copy()
 
@@ -30,10 +37,7 @@ def getLineChart(template, x, y):
 		pseudoX.append(' ')
 		pseudoY.append(y[len(y)-1])
 
-	# print(x)
-	# print(pseudoX)
-	# print(y)
-	# print(pseudoY)
+
 
 	plt.style.use('fast')
 	fig = plt.figure(figsize = [7,7])
@@ -86,6 +90,7 @@ def getLineChart(template, x, y):
 	# print("Saving picture: " + str(id))
 	fig.savefig("tmp.jpg",figsize=(7, 7), dpi=1200)
 
+# Print html to pdf with the data fetched from google sheet
 def printPdfFromHtml(clientInfo, count, date, filename, template, directory):
 	path_wkthmltopdf = r'wkhtmltopdf\\bin\\wkhtmltopdf.exe'
 	config = pdfkit.configuration(wkhtmltopdf=path_wkthmltopdf)
@@ -104,6 +109,7 @@ def printPdfFromHtml(clientInfo, count, date, filename, template, directory):
 	# print(soup.prettify().encode('utf-8'))
 	pdfkit.from_file('PanCA Monitor HTML\\htmlWithInfo.html', directory + "/" + filename, configuration=config, options = option)
 
+# Filling in blanks according to the data fetched from google sheet
 def fillInById(soup, clientInfo, count, date, template):
 	today = datetime.date.today().strftime("%Y/%m/%d")
 	bdMonth, bdDay, bdYear = clientInfo[1].split("/")
@@ -136,7 +142,7 @@ def fillInById(soup, clientInfo, count, date, template):
 	soup.find(id='eSignDate1').string               = today
 
 	if template != "USA_PanCA_EN_Template.html":
-		soup.find(id='eSignDate2').string               = today
+		# soup.find(id='eSignDate2').string               = today
 		soup.find(id='nameOfLab').string                = clientInfo[6]
 
 	soup.find(id='tumorType').string                = ''
@@ -159,11 +165,17 @@ def fillInById(soup, clientInfo, count, date, template):
 
 	return soup
 
+# Upon the "Submit", or "Cancel" button pressed following procedures will be executed
 def press(button):
+	# Stop app if Cancel button hit
 	if button == "Cancel":
 		app.stop()
+	# Generate report if Submit
 	else:
+		# Appjar interface will crash due to the other threads eating up the memory
+		# so hide the intertface prevent user interupt
 		app.hide()
+		# Getting user input
 		name = str(app.entry("Name"))
 		bd = str(app.entry("Birthday"))
 		bd = bd.split("/")[1] + "/" + bd.split("/")[2] + "/" + bd.split("/")[0]
@@ -207,7 +219,9 @@ def press(button):
 		print("Output dir: " + directory)
 		print("Press Ctrl+C (twice or more)to quit")
 
+		# Fetch google sheet component initialize
 		credential = fgs.init()
+		# Get data needed for filling the blanks
 		clientId, gender, twId = fgs.getId(credential, [name], [bd])
 		if clientId != "Not found":
 			print('client id: ' + clientId)
@@ -220,7 +234,8 @@ def press(button):
 			print("count:" + str(count))
 			# collection date 
 			# x,y = fgs.getRecord(credential, clientId)
-			# Create new threads
+			# Create new threads for running getLineChart() and printPdfFromHtml(),
+			# this also prevents resource contention that happens sometimes that eventually crash the program
 			thread1 = myThread(1, "Thread_getLineChart", [getLineChart, template, date.copy(), count.copy()])
 			thread2 = myThread(2, "Thread_printPdfFromHtml", [printPdfFromHtml, clientInfo, count.copy(), date.copy(), filename, template, directory])
 
@@ -249,6 +264,7 @@ def press(button):
 			app.clearAllEntries(callFunction=False)
 		app.show()
 
+# Threading function and class
 def executeThreadFunc(args):
 	if args[0] == getLineChart:
 		getLineChart(args[1], args[2], args[3])
@@ -256,9 +272,6 @@ def executeThreadFunc(args):
 		printPdfFromHtml(args[1], args[2], args[3], args[4], args[5], args[6])
 	elif args[0] == fgs.fetchReportCount:
 		fgs.fetchReportCount(args[1], args[2])
-
-def stop():
-	app.stop()
 
 class myThread (threading.Thread):
 	def __init__(self, threadID, name, args):
@@ -278,6 +291,10 @@ class myThread (threading.Thread):
 		# Free lock to release next thread
 		threadLock.release()
 		print(self.name + " released lock.")
+
+# For binding escape key on ui
+def stop():
+	app.stop()
 
 ###############
 #MAIN FUNCTION#

@@ -1,4 +1,5 @@
 import os
+# setup program for users that haven't install required packages
 os.system('python get-pip.py')
 os.system('pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib')
 os.system('pip install appJar==0.94.0')
